@@ -6,7 +6,7 @@ import java.util.Map;
 
 class CommandFactory {
     private static CommandFactory instance;
-    private final Map<CommandType, CommandCreator> creators;
+    private final Map<CommandType, Command.CommandCreator> creators;
 
     public static CommandFactory getInstance() {
         if (instance == null) {
@@ -16,7 +16,7 @@ class CommandFactory {
         return instance;
     }
 
-    public void addCreator(CommandType type, CommandCreator creator) {
+    public void addCreator(CommandType type, Command.CommandCreator creator) {
         creators.put(type, creator);
     }
 
@@ -24,7 +24,7 @@ class CommandFactory {
         String[] tokens = input.split(" ");
         CommandType type = CommandType.getAsType(tokens[0]);
 
-        CommandCreator creator = creators.get(type);
+        Command.CommandCreator creator = creators.get(type);
         if (creator == null) {
             throw new RuntimeException("Creator with " + type + " type does not exist");
         }
