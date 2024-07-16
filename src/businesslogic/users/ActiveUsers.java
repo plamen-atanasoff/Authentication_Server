@@ -2,8 +2,6 @@ package businesslogic.users;
 
 import businesslogic.exception.InvalidSessionIdException;
 import businesslogic.exception.UserNotFoundException;
-import businesslogic.exception.InvalidSessionIdException;
-import businesslogic.exception.UserNotFoundException;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -13,7 +11,7 @@ import java.util.Map;
 
 public class ActiveUsers {
     private final long sessionTimeout;
-    private Map<Integer, User> activeUsers;
+    private final Map<Integer, User> activeUsers;
 
     public ActiveUsers(long invalidationInterval, long sessionTimeout) {
         this.sessionTimeout = sessionTimeout;

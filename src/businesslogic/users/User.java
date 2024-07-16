@@ -4,8 +4,8 @@ import java.time.Instant;
 
 public class User {
     private static int sessionId = 0;
-    private int userSessionId;
-    private Instant loginTime;
+    private final int userSessionId;
+    private final Instant loginTime;
     private String username;
     private boolean isAdmin;
 

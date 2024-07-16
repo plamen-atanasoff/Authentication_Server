@@ -1,7 +1,6 @@
 package businesslogic.command;
 
 import businesslogic.tokenizer.Tokenizer;
-import businesslogic.tokenizer.Tokenizer;
 
 import java.util.Map;
 

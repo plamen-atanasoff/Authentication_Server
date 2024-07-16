@@ -1,15 +1,14 @@
 package businesslogic.database;
 
 import businesslogic.exception.UserNotFoundException;
-import businesslogic.exception.UserNotFoundException;
 
 import java.util.Collections;
 import java.util.Set;
 
 public class UserDatabase {
     private int admins;
-    private UserDatabaseFile usersFile;
-    private Set<UserCredentials> users;
+    private final UserDatabaseFile usersFile;
+    private final Set<UserCredentials> users;
 
     public UserDatabase(UserDatabaseFile usersFile) {
         this.usersFile = usersFile;

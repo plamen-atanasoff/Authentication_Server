@@ -1,7 +1,6 @@
 package businesslogic.database;
 
 import businesslogic.tokenizer.Tokenizer;
-import businesslogic.tokenizer.Tokenizer;
 
 public record UserCredentials(String username, String password, String firstName, String lastName,
                               String email, boolean isAdmin) {

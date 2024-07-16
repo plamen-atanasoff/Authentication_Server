@@ -9,13 +9,13 @@ import businesslogic.logger.Logger;
 import businesslogic.passwordencryptor.PasswordEncryptor;
 import businesslogic.users.ActiveUsers;
 import businesslogic.users.User;
-import businesslogic.database.UserCredentials;
+/*import businesslogic.database.UserCredentials;
 import businesslogic.exception.InvalidCredentialsException;
 import businesslogic.exception.InvalidSessionIdException;
 import businesslogic.exception.UserAlreadyRegisteredException;
 import businesslogic.logger.Logger;
 import businesslogic.passwordencryptor.PasswordEncryptor;
-import businesslogic.users.User;
+import businesslogic.users.User;*/
 
 import java.time.Instant;
 import java.util.Map;
@@ -48,8 +48,8 @@ public class CommandExecutor {
     private static final String NEW_LAST_NAME = "new-last-name";
     private static final String NEW_EMAIL = "new-email";
 
-    private UserDatabase users;
-    private ActiveUsers activeUsers;
+    private final UserDatabase users;
+    private final ActiveUsers activeUsers;
 
     public CommandExecutor(UserDatabase users, ActiveUsers activeUsers) {
         this.users = users;

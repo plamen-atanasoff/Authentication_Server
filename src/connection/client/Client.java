@@ -6,11 +6,12 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.nio.channels.Channels;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Client {
     private static final String SERVER_HOST = "localhost";
-    private int serverPort;
+    private final int serverPort;
 
     public Client(int serverPort) {
         this.serverPort = serverPort;
@@ -18,8 +19,8 @@ public class Client {
 
     public void run() {
         try (SocketChannel socketChannel = SocketChannel.open();
-             BufferedReader reader = new BufferedReader(Channels.newReader(socketChannel, "UTF-8"));
-             PrintWriter writer = new PrintWriter(Channels.newWriter(socketChannel, "UTF-8"), true);
+             BufferedReader reader = new BufferedReader(Channels.newReader(socketChannel, StandardCharsets.UTF_8));
+             PrintWriter writer = new PrintWriter(Channels.newWriter(socketChannel, StandardCharsets.UTF_8), true);
              Scanner scanner = new Scanner(System.in)) {
 
             socketChannel.connect(new InetSocketAddress(SERVER_HOST, serverPort));

@@ -25,7 +25,7 @@ public class Server {
     private ByteBuffer buffer;
     private final int port;
     private boolean isWorking;
-    private CommandExecutor commandExecutor;
+    private final CommandExecutor commandExecutor;
 
     public Server(int port, CommandExecutor commandExecutor) {
         this.port = port;
