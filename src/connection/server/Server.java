@@ -131,7 +131,7 @@ public class Server {
         final int port = 7777;
         final long invalidationInterval = 5 * 60 * 1000;
         final long sessionTimeout = 5 * 60 * 1000;
-        Path filePath = Path.of("F:\\Java\\Projects\\Authentication-Server-FMI-MJT\\userDatabase.txt");
+        Path filePath = Path.of("D:\\Java Projects\\Authentication_Server\\userDatabase.txt");
 
         UserDatabaseFile userDatabaseFile = new UserDatabaseFile(filePath);
         UserDatabase userDatabase = new UserDatabase(userDatabaseFile);
