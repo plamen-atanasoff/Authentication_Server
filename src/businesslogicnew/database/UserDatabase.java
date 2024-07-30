@@ -1,13 +1,30 @@
 package businesslogicnew.database;
 
+import java.io.IOException;
+
 public class UserDatabase {
-    private final String DATABASE_FILE_NAME;
+
+    private static final String DEFAULT_DATABASE_NAME = "userDatabase.txt";
+
+    private final FileManager fileManager;
 
     public UserDatabase() {
-        this("userDatabase.txt");
+        this(new FileManager(DEFAULT_DATABASE_NAME));
     }
 
-    public UserDatabase(String databaseFileName) {
-        this.DATABASE_FILE_NAME = databaseFileName;
+    public UserDatabase(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
+
+    public void addUser(UserCredentials user) throws IOException {
+        fileManager.writeUser(user);
+    }
+
+    public void updateUser(UserCredentials user) {
+
+    }
+
+    public void deleteUser(int userId) {
+
     }
 }
