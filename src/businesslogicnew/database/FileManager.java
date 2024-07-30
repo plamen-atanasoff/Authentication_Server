@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
@@ -41,4 +42,40 @@ public class FileManager {
         }
     }
 
+    public void updateUser(UserCredentials user) throws IOException {
+        List<String> lines = new ArrayList<>(Files.readAllLines(filePath).stream().skip(1).toList());
+
+        List<Integer> linesUserId = lines.stream()
+            .map(s -> Integer.parseInt(s.substring(0, s.indexOf(SEPARATOR))))
+            .toList();
+
+        int size = lines.size(), count = 0;
+        for (int i = 0; i < size; i++) {
+            if (linesUserId.get(i) == user.id()) {
+                lines.remove(i);
+                break;
+            } else {
+                count++;
+            }
+        }
+
+        try (var bufferedWriter = Files.newBufferedWriter(filePath)) {
+            bufferedWriter.write(FIRST_ROW);
+            bufferedWriter.newLine();
+
+            for (int i = 0; i < count; i++) {
+                bufferedWriter.write(lines.get(i));
+                bufferedWriter.newLine();
+            }
+
+            String[] values = user.getValues();
+            bufferedWriter.write(String.join(SEPARATOR, values));
+            bufferedWriter.newLine();
+
+            for (int i = count; i < size - 1; i++) {
+                bufferedWriter.write(lines.get(i));
+                bufferedWriter.newLine();
+            }
+        }
+    }
 }
