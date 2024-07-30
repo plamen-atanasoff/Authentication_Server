@@ -1,6 +1,5 @@
-package businesslogicnew.commandnew;
+package businesslogicnew.command;
 
-import businesslogicnew.command.CommandType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
