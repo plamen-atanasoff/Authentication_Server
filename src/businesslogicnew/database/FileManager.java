@@ -9,21 +9,23 @@ import java.util.List;
 
 public class FileManager {
 
-    private final String fileName;
+    private final Path filePath;
 
     private static final String SEPARATOR = ",";
 
-    public FileManager(String fileName) {
-        if (fileName == null) {
+    private static final String FIRST_ROW = "username,\"password\",firstName,lastName,email,adminStatus";
+
+    public FileManager(Path filePath) {
+        if (filePath == null) {
             throw new IllegalArgumentException("File name is null");
         }
 
-        this.fileName = fileName;
+        this.filePath = filePath;
     }
 
     public void writeUser(UserCredentials user) throws IOException {
         try (var bufferedWriter = Files.newBufferedWriter(
-                Path.of(fileName), StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
+            filePath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
             String[] values = user.getValues();
             bufferedWriter.write(String.join(SEPARATOR, values));
             bufferedWriter.newLine();
@@ -31,7 +33,7 @@ public class FileManager {
     }
 
     public boolean userExists(int userId) throws IOException {
-        try (var bufferedReader = Files.newBufferedReader(Path.of(fileName))) {
+        try (var bufferedReader = Files.newBufferedReader(filePath)) {
             return bufferedReader.lines()
                     .skip(1)
                     .map(s -> Integer.parseInt(s.substring(0, s.indexOf(SEPARATOR))))
