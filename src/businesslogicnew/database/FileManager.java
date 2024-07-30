@@ -5,28 +5,20 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class FileManager {
+
     private final String fileName;
+
     private static final String SEPARATOR = ",";
+
     public FileManager(String fileName) {
         if (fileName == null) {
-            throw new IllegalArgumentException("file name is null");
+            throw new IllegalArgumentException("File name is null");
         }
 
         this.fileName = fileName;
-    }
-
-    public void readFile(Map<Integer, UserCredentials> users) throws IOException {
-        try (var bufferedReader = Files.newBufferedReader(Path.of(fileName))) {
-            users = bufferedReader.lines()
-                    .skip(1)
-                    .map(UserCredentials::of)
-                    .collect(Collectors.toMap(UserCredentials::id, v -> v));
-        }
     }
 
     public void writeUser(UserCredentials user) throws IOException {
