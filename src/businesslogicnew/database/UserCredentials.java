@@ -2,10 +2,14 @@ package businesslogicnew.database;
 
 public record UserCredentials(int id, String username, String password, String firstName, String lastName,
                               String email, boolean isAdmin) {
+
     private static final String DELIMITER = ",";
+
     private static final String IS_ADMIN = "1";
+
     private static final String IS_NOT_ADMIN = "0";
-    private static int FIELDS_COUNT = 7;
+
+    private static final int FIELDS_COUNT = 7;
 
     public static UserCredentials of(String line) {
         String[] tokens = line.split(DELIMITER);
