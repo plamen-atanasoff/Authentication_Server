@@ -13,8 +13,16 @@ public class UserDatabase {
         this(new FileManager(DEFAULT_DATABASE_PATH));
     }
 
+    public UserDatabase(Path databaseFilePath) {
+        this(new FileManager(databaseFilePath));
+    }
+
     public UserDatabase(FileManager fileManager) {
         this.fileManager = fileManager;
+    }
+
+    public UserCredentials getUser(String username) throws IOException {
+        return fileManager.readUser(username);
     }
 
     public void addUser(UserCredentials user) throws IOException {

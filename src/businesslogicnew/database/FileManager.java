@@ -24,6 +24,16 @@ public class FileManager {
         this.filePath = filePath;
     }
 
+    public UserCredentials readUser(String username) throws IOException {
+        try (var bufferedReader = Files.newBufferedReader(filePath)) {
+            return bufferedReader.lines()
+                .map(UserCredentials::of)
+                .filter(u -> u.username().equals(username))
+                .findFirst()
+                .orElse(null);
+        }
+    }
+
     public void writeUser(UserCredentials user) throws IOException {
         try (var bufferedWriter = Files.newBufferedWriter(
             filePath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
