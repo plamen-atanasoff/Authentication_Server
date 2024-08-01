@@ -2,8 +2,7 @@ package businesslogicnew.controller;
 
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandFactory;
-import businesslogic.database.UserDatabase;
-import businesslogic.database.UserDatabaseFile;
+import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 
 import java.nio.file.Path;
@@ -37,7 +36,7 @@ public class Controller {
     }
 
     private Controller() {
-        this.users = new UserDatabase(new UserDatabaseFile(Path.of(USER_DATABASE_FILE_NAME)));
+        this.users = new UserDatabase(Path.of(USER_DATABASE_FILE_NAME));
         this.activeUsers = new ActiveUsers();
     }
 }

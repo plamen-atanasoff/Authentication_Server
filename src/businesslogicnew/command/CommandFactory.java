@@ -1,7 +1,7 @@
 package businesslogicnew.command;
 
 import businesslogicnew.command.commands.Creator;
-import businesslogic.database.UserDatabase;
+import businesslogicnew.database.UserDatabase;
 import businesslogicnew.tokenizer.Tokenizer;
 import businesslogicnew.users.ActiveUsers;
 

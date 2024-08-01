@@ -2,7 +2,7 @@ package businesslogicnew.command.commands;
 
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
-import businesslogic.database.UserDatabase;
+import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 
 import java.util.Map;

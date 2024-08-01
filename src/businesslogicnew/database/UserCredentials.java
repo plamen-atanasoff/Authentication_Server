@@ -1,6 +1,6 @@
 package businesslogicnew.database;
 
-public record UserCredentials(int id, String username, String password, String firstName, String lastName,
+public record UserCredentials(int id, String username, String passwordHash, String firstName, String lastName,
                               String email, boolean isAdmin) {
 
     private static final String DELIMITER = ",";
@@ -22,7 +22,7 @@ public record UserCredentials(int id, String username, String password, String f
         String[] values = new String[FIELDS_COUNT];
         values[0] = String.valueOf(id);
         values[1] = username;
-        values[2] = password;
+        values[2] = passwordHash;
         values[3] = firstName;
         values[4] = lastName;
         values[5] = email;

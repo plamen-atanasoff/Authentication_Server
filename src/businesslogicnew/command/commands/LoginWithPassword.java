@@ -1,20 +1,31 @@
 package businesslogicnew.command.commands;
 
+import businesslogic.passwordencryptor.PasswordEncryptor;
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
-import businesslogic.database.UserDatabase;
-import businesslogic.exception.InvalidCredentialsException;
+import businesslogicnew.database.UserDatabase;
+import businesslogicnew.database.UserCredentials;
 import businesslogicnew.users.ActiveUsers;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Map;
 
 public class LoginWithPassword implements Command {
-    private static final String INVALID_LOGIN_CREDENTIALS_MESSAGE = "invalid login credentials";
+    private static final String INVALID_LOGIN_CREDENTIALS_MESSAGE = "Invalid login credentials";
+
+    private static final String USER_DOES_NOT_EXIST_MESSAGE = "User does not exist";
+
     private static final String FORMAT_STRING = "Input tokens must be %d";
+
     private static final int ARGS_COUNT = 2;
+
     private final String username;
+
     private final String password;
+
     private final UserDatabase users;
+
     private final ActiveUsers activeUsers;
 
     public LoginWithPassword(String username, String password, UserDatabase users, ActiveUsers activeUsers) {

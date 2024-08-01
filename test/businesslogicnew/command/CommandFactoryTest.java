@@ -1,6 +1,6 @@
 package businesslogicnew.command;
 
-import businesslogic.database.UserDatabase;
+import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 import org.junit.jupiter.api.Test;
 
