@@ -13,35 +13,50 @@ public class ActiveUsers {
 
     private final long sessionTimeout;
 
-    private final Set<Integer> activeUsers = new HashSet<>();
+    private final Set<Integer> sessions;
 
-    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService executor;
 
     public ActiveUsers() {
         this(DEFAULT_SESSION_TIMEOUT_SECONDS);
     }
+
     public ActiveUsers(long sessionTimeout) {
+        this(sessionTimeout, new HashSet<>());
+    }
+
+    public ActiveUsers(long sessionTimeout, Set<Integer> activeUsers) {
+        this(sessionTimeout, activeUsers, Executors.newSingleThreadScheduledExecutor());
+    }
+
+    public ActiveUsers(long sessionTimeout, Set<Integer> activeUsers, ScheduledExecutorService executor) {
         if (sessionTimeout <= 0) {
             throw new IllegalArgumentException("SessionTimeout must be a positive number");
         }
 
         this.sessionTimeout = sessionTimeout;
+        this.sessions = activeUsers;
+        this.executor = executor;
     }
 
     public int addSession() {
-        activeUsers.add(sessionId);
+        sessions.add(sessionId);
         scheduleSessionExpiration(sessionId);
 
         return sessionId++;
     }
 
-    public boolean removeSession(int sessionId) {
-        return activeUsers.remove(sessionId);
+    public void removeSession(int sessionId) {
+        sessions.remove(sessionId);
+    }
+
+    public boolean sessionExists(int sessionId) {
+        return sessions.contains(sessionId);
     }
 
     private void scheduleSessionExpiration(int sessionId) {
         executor.schedule(() -> {
-            activeUsers.remove(sessionId);
+            sessions.remove(sessionId);
         }, sessionTimeout, TimeUnit.SECONDS);
     }
 
