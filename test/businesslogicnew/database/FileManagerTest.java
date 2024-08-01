@@ -111,4 +111,36 @@ public class FileManagerTest {
 
         Files.delete(tempFilePath);
     }
+
+    @Test
+    void testDeleteUserWorksCorrectly() throws IOException {
+        String line0 = "username,\"password\",firstName,lastName,email,adminStatus";
+        String line1 = "1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg,1";
+        String line2 = "2,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg,0";
+        String line3 = "3,teddy,\"pass\",Tony,Petrov,tony@abv.bg,0";
+
+        Path tempFilePath = Files.createTempFile("tempUserDatabase", ".txt");
+
+        try (var bw = Files.newBufferedWriter(tempFilePath)) {
+            bw.write(line0);
+            bw.newLine();
+
+            bw.write(line1);
+            bw.newLine();
+            bw.write(line2);
+            bw.newLine();
+            bw.write(line3);
+            bw.newLine();
+        }
+
+        FileManager fm = new FileManager(tempFilePath);
+
+        fm.deleteUser(2);
+
+        assertTrue(fm.userExists(1));
+        assertFalse(fm.userExists(2));
+        assertTrue(fm.userExists(3));
+        assertFalse(fm.userExists(4));
+        assertFalse(fm.userExists(0));
+    }
 }

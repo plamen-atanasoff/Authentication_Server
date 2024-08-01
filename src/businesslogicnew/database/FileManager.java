@@ -43,6 +43,14 @@ public class FileManager {
     }
 
     public void updateUser(UserCredentials user) throws IOException {
+        modifyUser(user.id(), user);
+    }
+
+    public void deleteUser(int userId) throws IOException {
+        modifyUser(userId, null);
+    }
+
+    private void modifyUser(int userId, UserCredentials user) throws IOException {
         List<String> lines = new ArrayList<>(Files.readAllLines(filePath).stream().skip(1).toList());
 
         List<Integer> linesUserId = lines.stream()
@@ -51,7 +59,7 @@ public class FileManager {
 
         int size = lines.size(), count = 0;
         for (int i = 0; i < size; i++) {
-            if (linesUserId.get(i) == user.id()) {
+            if (linesUserId.get(i) == userId) {
                 lines.remove(i);
                 break;
             } else {
@@ -68,9 +76,11 @@ public class FileManager {
                 bufferedWriter.newLine();
             }
 
-            String[] values = user.getValues();
-            bufferedWriter.write(String.join(SEPARATOR, values));
-            bufferedWriter.newLine();
+            if (user != null) {
+                String[] values = user.getValues();
+                bufferedWriter.write(String.join(SEPARATOR, values));
+                bufferedWriter.newLine();
+            }
 
             for (int i = count; i < size - 1; i++) {
                 bufferedWriter.write(lines.get(i));

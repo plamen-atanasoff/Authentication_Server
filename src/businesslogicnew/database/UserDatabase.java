@@ -21,11 +21,11 @@ public class UserDatabase {
         fileManager.writeUser(user);
     }
 
-    public void updateUser(UserCredentials user) {
-
+    public void updateUser(UserCredentials user) throws IOException {
+        fileManager.updateUser(user);
     }
 
-    public void deleteUser(int userId) {
-
+    public void deleteUser(int userId) throws IOException {
+        fileManager.deleteUser(userId);
     }
 }
