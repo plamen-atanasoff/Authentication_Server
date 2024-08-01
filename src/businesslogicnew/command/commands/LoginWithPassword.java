@@ -37,13 +37,25 @@ public class LoginWithPassword implements Command {
 
     @Override
     public String execute() {
-        return null;
-    }
-
-    private void validatePassword(String expectedPassword, String actualPassword) {
-        if (!actualPassword.equals(expectedPassword)) {
-            throw new InvalidCredentialsException(INVALID_LOGIN_CREDENTIALS_MESSAGE);
+        UserCredentials user;
+        try {
+            user = users.getUser(username);
+        } catch(IOException e) {
+            throw new UncheckedIOException(e);
         }
+
+        if (user == null) {
+            return USER_DOES_NOT_EXIST_MESSAGE;
+        }
+
+        String passwordHashRequest = PasswordEncryptor.encryptPassword(password);
+        if (!passwordHashRequest.equals(user.passwordHash())) {
+            return INVALID_LOGIN_CREDENTIALS_MESSAGE;
+        }
+
+        int sessionId = activeUsers.addSession();
+
+        return String.valueOf(sessionId);
     }
 
     public static class LoginWithPasswordCreator extends Creator.CommandCreator {
