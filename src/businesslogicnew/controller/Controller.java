@@ -10,10 +10,13 @@ import java.nio.file.Path;
 
 public class Controller {
     private static final String USER_DATABASE_FILE_NAME = "userDatabase.txt";
+
     private static final String WRONG_COMMAND_MESSAGE = "Wrong command";
 
     private static Controller controller;
+
     private final UserDatabase users;
+
     private final ActiveUsers activeUsers;
 
     public static Controller getInstance() {
@@ -23,6 +26,7 @@ public class Controller {
 
         return controller;
     }
+
     public String execute(String input) {
         Command command = CommandFactory.getInstance().createCommand(input, users, activeUsers);
         if (command == null) {
