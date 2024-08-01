@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommandFactory {
+    private static final int SEPARATOR_SYMBOLS_COUNT = 2;
     private static final String DELIMITER = " ";
     private static final String FORMAT_STRING = "Creator with %s type does not exist";
     private static CommandFactory instance;
@@ -33,7 +34,8 @@ public class CommandFactory {
 
         return creator.create(
                 Tokenizer.tokenizeFromSocketChannel(
-                        input.substring(separatingIndex + 1)), users, activeUsers);
+                    input.substring(separatingIndex).trim().substring(SEPARATOR_SYMBOLS_COUNT)),
+                users, activeUsers);
     }
 
     private CommandFactory() {

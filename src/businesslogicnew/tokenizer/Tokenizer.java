@@ -10,7 +10,6 @@ public class Tokenizer {
     public static Map<String, String> tokenizeFromSocketChannel(String line) {
         Map<String, String> res = new HashMap<>();
 
-        line = line.strip().substring(2);
         String[] tokens = line.split(REGEX_SOCKET_CHANNEL);
 
         for (String token : tokens) {
