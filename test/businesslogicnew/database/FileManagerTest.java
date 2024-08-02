@@ -63,7 +63,7 @@ public class FileManagerTest {
         }
 
         FileManager fm = new FileManager(tempFilePath);
-        fm.writeUser(UserCredentials.of(line3));
+        fm.writeUser(User.of(line3));
 
         assertTrue(fm.userExists(1));
         assertTrue(fm.userExists(2));
@@ -97,7 +97,7 @@ public class FileManagerTest {
 
         FileManager fm = new FileManager(tempFilePath);
 
-        fm.updateUser(UserCredentials.of("2,bobbynew,\"pass\",Borislav,Petrov,bobi@abv.bg,0"));
+        fm.updateUser(User.of("2,bobbynew,\"pass\",Borislav,Petrov,bobi@abv.bg,0"));
 
         assertTrue(fm.userExists(1));
         assertTrue(fm.userExists(2));
