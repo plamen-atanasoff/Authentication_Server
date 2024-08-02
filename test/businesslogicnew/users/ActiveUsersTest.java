@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -63,5 +65,21 @@ public class ActiveUsersTest {
         activeUsers.shutdown();
 
         verify(executor, atMostOnce()).shutdown();
+    }
+
+    @Test
+    void testSessionTimeoutWorksCorrectly() throws InterruptedException {
+        int sessionTimeout = 1;
+        Set<Integer> sessions = mock();
+        ScheduledExecutorService executor = mock();
+
+        ActiveUsers activeUsers = new ActiveUsers(sessionTimeout, sessions, executor);
+
+        activeUsers.addSession();
+        Thread.sleep(sessionTimeout * 1000);
+
+        verify(executor, atMostOnce()).schedule(any(Runnable.class), eq(sessionTimeout), eq(TimeUnit.SECONDS));
+        verify(sessions, atMostOnce()).add(anyInt());
+        verify(sessions, atMostOnce()).remove(anyInt());
     }
 }
