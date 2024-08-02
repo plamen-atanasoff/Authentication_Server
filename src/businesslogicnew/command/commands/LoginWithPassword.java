@@ -3,8 +3,8 @@ package businesslogicnew.command.commands;
 import businesslogic.passwordencryptor.PasswordEncryptor;
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
+import businesslogicnew.database.User;
 import businesslogicnew.database.UserDatabase;
-import businesslogicnew.database.UserCredentials;
 import businesslogicnew.users.ActiveUsers;
 
 import java.io.IOException;
@@ -16,10 +16,6 @@ public class LoginWithPassword implements Command {
 
     private static final String USER_DOES_NOT_EXIST_MESSAGE = "User does not exist";
 
-    private static final String FORMAT_STRING = "Input tokens must be %d";
-
-    private static final int ARGS_COUNT = 2;
-
     private final String username;
 
     private final String password;
@@ -29,6 +25,10 @@ public class LoginWithPassword implements Command {
     private final ActiveUsers activeUsers;
 
     public LoginWithPassword(String username, String password, UserDatabase users, ActiveUsers activeUsers) {
+        if (username == null || password == null) {
+            throw new IllegalArgumentException("Username or password is null");
+        }
+
         this.username = username;
         this.password = password;
         this.users = users;
@@ -37,7 +37,7 @@ public class LoginWithPassword implements Command {
 
     @Override
     public String execute() {
-        UserCredentials user;
+        User user;
         try {
             user = users.getUser(username);
         } catch(IOException e) {
@@ -49,7 +49,7 @@ public class LoginWithPassword implements Command {
         }
 
         String passwordHashRequest = PasswordEncryptor.encryptPassword(password);
-        if (!passwordHashRequest.equals(user.passwordHash())) {
+        if (!passwordHashRequest.equals(user.credentials().passwordHash())) {
             return INVALID_LOGIN_CREDENTIALS_MESSAGE;
         }
 
@@ -59,13 +59,19 @@ public class LoginWithPassword implements Command {
     }
 
     public static class LoginWithPasswordCreator extends Creator.CommandCreator {
-        public LoginWithPasswordCreator() {
+        private static final int ARGS_COUNT = 2; // username, password
+
+        protected LoginWithPasswordCreator() {
             super(CommandType.LOGIN);
         }
         @Override
         public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers) {
             if (input.size() != ARGS_COUNT) {
-                throw new IllegalArgumentException(String.format(FORMAT_STRING, ARGS_COUNT));
+                throw new RuntimeException(String.format(FORMAT_STRING, ARGS_COUNT));
+            }
+
+            if (!input.containsKey("username") || !input.containsKey("password")) {
+                throw new RuntimeException("Username or password is missing");
             }
 
             return new LoginWithPassword(input.get("username"), input.get("password"), users, activeUsers);
