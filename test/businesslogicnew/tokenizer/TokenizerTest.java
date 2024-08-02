@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TokenizerTest {
     @Test
@@ -21,5 +22,10 @@ public class TokenizerTest {
         assertEquals("Petur", res.get("first-name"));
         assertEquals("Velikov", res.get("last-name"));
         assertEquals("myemail@gmail.com", res.get("email"));
+    }
+
+    @Test
+    void testTokenizeFromSocketChannelThrowsCorrectly() {
+        assertThrows(RuntimeException.class, () -> Tokenizer.tokenizeFromSocketChannel("username"));
     }
 }
