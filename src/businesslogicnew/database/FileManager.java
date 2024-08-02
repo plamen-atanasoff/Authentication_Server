@@ -24,17 +24,18 @@ public class FileManager {
         this.filePath = filePath;
     }
 
-    public UserCredentials readUser(String username) throws IOException {
+    public User readUser(String username) throws IOException {
         try (var bufferedReader = Files.newBufferedReader(filePath)) {
             return bufferedReader.lines()
-                .map(UserCredentials::of)
-                .filter(u -> u.username().equals(username))
+                .skip(1)
+                .map(User::of)
+                .filter(u -> u.credentials().username().equals(username))
                 .findFirst()
                 .orElse(null);
         }
     }
 
-    public void writeUser(UserCredentials user) throws IOException {
+    public void writeUser(User user) throws IOException {
         try (var bufferedWriter = Files.newBufferedWriter(
             filePath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
             String[] values = user.getValues();
@@ -52,7 +53,7 @@ public class FileManager {
         }
     }
 
-    public void updateUser(UserCredentials user) throws IOException {
+    public void updateUser(User user) throws IOException {
         modifyUser(user.id(), user);
     }
 
@@ -60,7 +61,7 @@ public class FileManager {
         modifyUser(userId, null);
     }
 
-    private void modifyUser(int userId, UserCredentials user) throws IOException {
+    private void modifyUser(int userId, User user) throws IOException {
         List<String> lines = new ArrayList<>(Files.readAllLines(filePath).stream().skip(1).toList());
 
         List<Integer> linesUserId = lines.stream()
@@ -96,6 +97,16 @@ public class FileManager {
                 bufferedWriter.write(lines.get(i));
                 bufferedWriter.newLine();
             }
+        }
+    }
+
+    public int readId() throws IOException {
+        try (var bufferedReader = Files.newBufferedReader(filePath)) {
+            return bufferedReader.lines()
+                .skip(1)
+                .map(l -> Integer.parseInt(l.substring(0, l.indexOf(SEPARATOR))))
+                .max(Integer::compareTo)
+                .orElse(1);
         }
     }
 }
