@@ -8,7 +8,8 @@ import businesslogicnew.users.ActiveUsers;
 import java.util.Map;
 
 public enum Creator {
-    LOGIN(new LoginWithPassword.LoginWithPasswordCreator());
+    LOGIN(new LoginWithPassword.LoginWithPasswordCreator()),
+    REGISTER(new Register.RegisterCreator());
 
     private final CommandCreator creator;
 
@@ -21,6 +22,8 @@ public enum Creator {
     }
 
     public static abstract class CommandCreator {
+        protected static final String FORMAT_STRING = "Input tokens must be %d";
+
         private final CommandType type;
 
         protected CommandCreator(CommandType type) {
