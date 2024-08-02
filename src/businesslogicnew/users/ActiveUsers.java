@@ -55,9 +55,7 @@ public class ActiveUsers {
     }
 
     private void scheduleSessionExpiration(int sessionId) {
-        executor.schedule(() -> {
-            sessions.remove(sessionId);
-        }, sessionTimeout, TimeUnit.SECONDS);
+        executor.schedule(() -> removeSession(sessionId), sessionTimeout, TimeUnit.SECONDS);
     }
 
     public void shutdown() {
