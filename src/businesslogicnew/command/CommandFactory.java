@@ -25,9 +25,19 @@ public class CommandFactory {
 
     public Command createCommand(String input, UserDatabase users, ActiveUsers activeUsers) {
         int separatingIndex = input.indexOf(DELIMITER);
+
+        if (separatingIndex == -1) {
+            throw new IllegalArgumentException("Input is not in the right format");
+        }
+
         CommandType type = CommandType.getAsType(input.substring(0, separatingIndex));
 
+        if (type == null) {
+            throw new RuntimeException("Command does not exist");
+        }
+
         Creator.CommandCreator creator = creators.get(type);
+
         if (creator == null) {
             throw new RuntimeException(String.format(FORMAT_STRING, type));
         }
