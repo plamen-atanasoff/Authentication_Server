@@ -14,7 +14,10 @@ public class Tokenizer {
 
         for (String token : tokens) {
             String[] kvp = token.split(REGEX_TOKENS);
-            assert (kvp.length == 2);
+            if (kvp.length != 2) {
+                throw new RuntimeException("Token is not in the right format");
+            }
+
             res.put(kvp[0], kvp[1]);
         }
 
