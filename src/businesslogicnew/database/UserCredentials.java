@@ -1,32 +1,25 @@
 package businesslogicnew.database;
 
-public record UserCredentials(int id, String username, String passwordHash, String firstName, String lastName,
-                              String email, boolean isAdmin) {
+public record UserCredentials(String username, String passwordHash, String firstName, String lastName, String email) {
 
     private static final String DELIMITER = ",";
 
-    private static final String IS_ADMIN = "1";
-
-    private static final String IS_NOT_ADMIN = "0";
-
-    private static final int FIELDS_COUNT = 7;
+    private static final int FIELDS_COUNT = 5;
 
     public static UserCredentials of(String line) {
         String[] tokens = line.split(DELIMITER);
-        return new UserCredentials(
-                Integer.parseInt(tokens[0]), tokens[1], tokens[2], tokens[3], tokens[4], tokens[5],
-                tokens[6].equals(IS_ADMIN));
+        String passwordHash = tokens[1].substring(1, tokens[1].length() - 1); // remove enclosing quotation marks
+
+        return new UserCredentials( tokens[0], passwordHash, tokens[2], tokens[3], tokens[4]);
     }
 
     public String[] getValues() {
         String[] values = new String[FIELDS_COUNT];
-        values[0] = String.valueOf(id);
-        values[1] = username;
-        values[2] = passwordHash;
-        values[3] = firstName;
-        values[4] = lastName;
-        values[5] = email;
-        values[6] = isAdmin ? IS_ADMIN : IS_NOT_ADMIN;
+        values[0] = username;
+        values[1] = passwordHash;
+        values[2] = firstName;
+        values[3] = lastName;
+        values[4] = email;
 
         return values;
     }
