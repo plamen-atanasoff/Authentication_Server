@@ -5,6 +5,7 @@ import businesslogicnew.command.CommandFactory;
 import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 
+import java.io.IOException;
 import java.nio.file.Path;
 
 public class Controller {
@@ -18,7 +19,7 @@ public class Controller {
 
     private final ActiveUsers activeUsers;
 
-    public static Controller getInstance() {
+    public static Controller getInstance() throws IOException {
         if (controller == null) {
             controller = new Controller();
         }
@@ -35,7 +36,7 @@ public class Controller {
         return command.execute();
     }
 
-    private Controller() {
+    private Controller() throws IOException {
         this.users = new UserDatabase(Path.of(USER_DATABASE_FILE_NAME));
         this.activeUsers = new ActiveUsers();
     }
