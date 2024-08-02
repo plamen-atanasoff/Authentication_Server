@@ -1,6 +1,7 @@
 package businesslogicnew.command.commands;
 
 import businesslogic.passwordencryptor.PasswordEncryptor;
+import businesslogicnew.database.User;
 import businesslogicnew.database.UserCredentials;
 import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
@@ -19,8 +20,8 @@ public class LoginWithPasswordTest {
         String password = "myPass";
         int sessionId = 2;
         String passwordHash = PasswordEncryptor.encryptPassword(password);
-        UserCredentials u = mock();
-        when(u.passwordHash()).thenReturn(passwordHash);
+        User u = mock();
+        when(u.credentials().passwordHash()).thenReturn(passwordHash);
         UserDatabase db = mock();
         when(db.getUser(username)).thenReturn(u);
         ActiveUsers au = mock();
