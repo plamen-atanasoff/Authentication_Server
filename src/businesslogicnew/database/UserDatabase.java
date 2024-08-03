@@ -30,7 +30,7 @@ public class UserDatabase {
     }
 
     public void addUser(UserCredentials userCredentials) throws IOException {
-        User user = new User(id++, userCredentials, false);
+        User user = new User(id++, false, userCredentials);
 
         fileManager.writeUser(user);
     }
