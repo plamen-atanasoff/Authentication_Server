@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FileManagerTest {
     @Test
     void testUserExistsWorksCorrectly() throws IOException {
-        String line0 = "username,\"password\",firstName,lastName,email,adminStatus";
+        String line0 = "id,adminStatus,username,\"password\",firstName,lastName,email";
         String line1 = "1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg,1";
         String line2 = "2,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg,0";
         String line3 = "3,teddy,\"pass\",Tony,Petrov,tony@abv.bg,0";
