@@ -1,2 +1,2 @@
 username,"password",firstName,lastName,email,adminStatus
-1,plamen40,"y�k��o;;n�]�7��",Plamen,Petrov,email@abv.bg,0
+1,0,plamen40,"y�k��o;;n�]�7��",Plamen,Petrov,email@abv.bg
