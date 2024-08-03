@@ -14,7 +14,7 @@ public class FileManager {
 
     private static final String SEPARATOR = ",";
 
-    private static final String FIRST_ROW = "username,\"password\",firstName,lastName,email,adminStatus";
+    private static final String FIRST_ROW = "id,adminStatus,username,\"password\",firstName,lastName,email";
 
     public FileManager(Path filePath) {
         if (filePath == null) {
