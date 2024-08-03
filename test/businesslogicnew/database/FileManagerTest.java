@@ -15,9 +15,9 @@ public class FileManagerTest {
     @Test
     void testUserExistsWorksCorrectly() throws IOException {
         String line0 = "id,adminStatus,username,\"password\",firstName,lastName,email";
-        String line1 = "1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg,1";
-        String line2 = "2,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg,0";
-        String line3 = "3,teddy,\"pass\",Tony,Petrov,tony@abv.bg,0";
+        String line1 = "1,1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg";
+        String line2 = "2,0,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg";
+        String line3 = "3,0,teddy,\"pass\",Tony,Petrov,tony@abv.bg";
 
         Path tempFilePath = Files.createTempFile("tempUserDatabase", ".txt");
 
@@ -45,10 +45,10 @@ public class FileManagerTest {
 
     @Test
     void testWriteUserWorksCorrectly() throws IOException {
-        String line0 = "username,\"password\",firstName,lastName,email,adminStatus";
-        String line1 = "1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg,1";
-        String line2 = "2,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg,0";
-        String line3 = "3,teddy,\"pass\",Tony,Petrov,tony@abv.bg,0";
+        String line0 = "id,adminStatus,username,\"password\",firstName,lastName,email";
+        String line1 = "1,1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg";
+        String line2 = "2,0,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg";
+        String line3 = "3,0,teddy,\"pass\",Tony,Petrov,tony@abv.bg";
 
         Path tempFilePath = Files.createTempFile("tempUserDatabase", ".txt");
 
@@ -76,10 +76,10 @@ public class FileManagerTest {
 
     @Test
     void testUpdateUserWorksCorrectly() throws IOException {
-        String line0 = "username,\"password\",firstName,lastName,email,adminStatus";
-        String line1 = "1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg,1";
-        String line2 = "2,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg,0";
-        String line3 = "3,teddy,\"pass\",Tony,Petrov,tony@abv.bg,0";
+        String line0 = "id,adminStatus,username,\"password\",firstName,lastName,email";
+        String line1 = "1,1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg";
+        String line2 = "2,0,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg";
+        String line3 = "3,0,teddy,\"pass\",Tony,Petrov,tony@abv.bg";
 
         Path tempFilePath = Files.createTempFile("tempUserDatabase", ".txt");
 
@@ -97,7 +97,7 @@ public class FileManagerTest {
 
         FileManager fm = new FileManager(tempFilePath);
 
-        fm.updateUser(User.of("2,bobbynew,\"pass\",Borislav,Petrov,bobi@abv.bg,0"));
+        fm.updateUser(User.of("2,0,bobbynew,\"pass\",Borislav,Petrov,bobi@abv.bg"));
 
         assertTrue(fm.userExists(1));
         assertTrue(fm.userExists(2));
@@ -105,19 +105,21 @@ public class FileManagerTest {
         assertFalse(fm.userExists(4));
         assertFalse(fm.userExists(0));
 
-        List<String> lines = Files.readAllLines(tempFilePath).stream().skip(1).toList(); // skip data description line
-        UserCredentials updatedUser = UserCredentials.of(lines.get(1)); // second line is updated user
-        assertEquals("bobbynew", updatedUser.username());
+        // skip data description line
+        List<String> lines = Files.readAllLines(tempFilePath).stream().skip(1).toList();
+        // second line is updated user
+        User updatedUser = User.of(lines.get(1));
+        assertEquals("bobbynew", updatedUser.credentials().username());
 
         Files.delete(tempFilePath);
     }
 
     @Test
     void testDeleteUserWorksCorrectly() throws IOException {
-        String line0 = "username,\"password\",firstName,lastName,email,adminStatus";
-        String line1 = "1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg,1";
-        String line2 = "2,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg,0";
-        String line3 = "3,teddy,\"pass\",Tony,Petrov,tony@abv.bg,0";
+        String line0 = "id,adminStatus,username,\"password\",firstName,lastName,email";
+        String line1 = "1,1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg";
+        String line2 = "2,0,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg";
+        String line3 = "3,0,teddy,\"pass\",Tony,Petrov,tony@abv.bg";
 
         Path tempFilePath = Files.createTempFile("tempUserDatabase", ".txt");
 
