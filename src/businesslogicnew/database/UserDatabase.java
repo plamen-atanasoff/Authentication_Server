@@ -22,7 +22,7 @@ public class UserDatabase {
     public UserDatabase(FileManager fileManager) throws IOException {
         this.fileManager = fileManager;
 
-        id = fileManager.readId();
+        id = fileManager.readId() + 1;
     }
 
     public User getUser(String username) throws IOException {
