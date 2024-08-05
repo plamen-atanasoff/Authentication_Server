@@ -1,6 +1,6 @@
 package businesslogicnew.database;
 
-import businesslogic.passwordencryptor.PasswordEncryptor;
+import businesslogicold.passwordencryptor.PasswordEncryptor;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

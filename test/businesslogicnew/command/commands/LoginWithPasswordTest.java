@@ -1,6 +1,6 @@
 package businesslogicnew.command.commands;
 
-import businesslogic.passwordencryptor.PasswordEncryptor;
+import businesslogicold.passwordencryptor.PasswordEncryptor;
 import businesslogicnew.database.User;
 import businesslogicnew.database.UserCredentials;
 import businesslogicnew.database.UserDatabase;
