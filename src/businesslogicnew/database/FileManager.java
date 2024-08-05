@@ -88,8 +88,7 @@ public class FileManager {
             }
 
             if (user != null) {
-                String[] values = user.getValues();
-                bufferedWriter.write(String.join(SEPARATOR, values));
+                bufferedWriter.write(user.toString());
                 bufferedWriter.newLine();
             }
 
