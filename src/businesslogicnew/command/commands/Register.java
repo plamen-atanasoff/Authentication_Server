@@ -7,10 +7,12 @@ import businesslogicnew.database.UserCredentials;
 import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class Register implements Command {
     private static final String USER_REGISTERED_MESSAGE = "User has been successfully registered";
+    private static final String USER_ALREADY_EXISTS_MESSAGE = "User already exists";
     private final String username;
 
     private final String password;
@@ -21,25 +23,40 @@ public class Register implements Command {
 
     private final String email;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final UserDatabase users;
 
-    private final ActiveUsers activeUsers;
-
     public Register(String username, String password, String firstName, String lastName, String email,
-                    UserDatabase users, ActiveUsers activeUsers) {
+                    UserDatabase users) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.users = users;
-        this.activeUsers = activeUsers;
     }
 
     @Override
     public String execute() {
+        // check if user already exists
+        try {
+            if (users.getUser(username) != null) {
+                return USER_ALREADY_EXISTS_MESSAGE;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // hash the password
+        String passwordHash = PasswordEncryptor.encryptPassword(password);
+
         // add user to the database
-        UserCredentials user = new UserCredentials(username, password, firstName, lastName, email);
+        UserCredentials user = new UserCredentials(username, passwordHash, firstName, lastName, email);
+        try {
+            users.addUser(user);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return USER_REGISTERED_MESSAGE;
     }
@@ -63,7 +80,7 @@ public class Register implements Command {
             }
 
             return new Register(input.get("username"), input.get("password"), input.get("first-name"),
-                input.get("last-name"), input.get("email"), users, activeUsers);
+                input.get("last-name"), input.get("email"), users);
         }
     }
 }
