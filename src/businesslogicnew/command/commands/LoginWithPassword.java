@@ -37,6 +37,7 @@ public class LoginWithPassword implements Command {
 
     @Override
     public String execute() {
+        // check if user exists
         User user;
         try {
             user = users.getUser(username);
@@ -48,11 +49,13 @@ public class LoginWithPassword implements Command {
             return USER_DOES_NOT_EXIST_MESSAGE;
         }
 
+        // check if passwordHash is valid
         String passwordHashRequest = PasswordEncryptor.encryptPassword(password);
         if (!passwordHashRequest.equals(user.credentials().passwordHash())) {
             return INVALID_LOGIN_CREDENTIALS_MESSAGE;
         }
 
+        // get valid session id
         int sessionId = activeUsers.addSession();
 
         return String.valueOf(sessionId);
