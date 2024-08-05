@@ -19,9 +19,17 @@ public class Controller {
 
     private final ActiveUsers activeUsers;
 
+    public static void create(UserDatabase userDatabase, ActiveUsers activeUsers) {
+        if (controller != null) {
+            return;
+        }
+
+        controller = new Controller(userDatabase, activeUsers);
+    }
+
     public static Controller getInstance() throws IOException {
         if (controller == null) {
-            controller = new Controller();
+            create(new UserDatabase(Path.of(USER_DATABASE_FILE_NAME)), new ActiveUsers());
         }
 
         return controller;
@@ -36,8 +44,12 @@ public class Controller {
         return command.execute();
     }
 
-    private Controller() throws IOException {
-        this.users = new UserDatabase(Path.of(USER_DATABASE_FILE_NAME));
-        this.activeUsers = new ActiveUsers();
+    private Controller(UserDatabase users, ActiveUsers activeUsers) {
+        if (users == null || activeUsers == null) {
+            throw new IllegalArgumentException("users or activeUsers is null");
+        }
+
+        this.users = users;
+        this.activeUsers = activeUsers;
     }
 }
