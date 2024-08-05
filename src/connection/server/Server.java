@@ -1,11 +1,5 @@
 package connection.server;
 
-//import businesslogic.command.Command;
-//import businesslogic.database.UserDatabase;
-//import businesslogic.database.UserDatabaseFile;
-//import businesslogic.users.ActiveUsers;
-
-import businesslogicold.command.CommandExecutor;
 import businesslogicnew.controller.Controller;
 
 import java.io.IOException;
@@ -27,11 +21,9 @@ public class Server {
     private ByteBuffer buffer;
     private final int port;
     private boolean isWorking;
-    private final CommandExecutor commandExecutor;
 
-    public Server(int port, CommandExecutor commandExecutor) {
+    public Server(int port) {
         this.port = port;
-        this.commandExecutor = commandExecutor;
     }
 
     public void start() {
@@ -57,13 +49,12 @@ public class Server {
                                 continue;
                             }
 
-                        String result;
-                        try {
-                            Command command = Command.of(clientInput);
-                            result = commandExecutor.execute(command);
-                        } catch (Exception e) {
-                            result = e.getMessage();
-                        }
+                            String result;
+                            try {
+                                result = Controller.getInstance().execute(clientInput);
+                            } catch (Exception e) {
+                                result = e.toString();
+                            }
 
                             System.out.println(result);
 
@@ -135,15 +126,7 @@ public class Server {
 
     public static void main(String[] args) {
         final int port = 7777;
-        final long invalidationInterval = 5 * 60 * 1000;
-        final long sessionTimeout = 5 * 60 * 1000;
-        Path filePath = Path.of("D:\\Java Projects\\Authentication_Server\\userDatabase.txt");
-
-        UserDatabaseFile userDatabaseFile = new UserDatabaseFile(filePath);
-        UserDatabase userDatabase = new UserDatabase(userDatabaseFile);
-        ActiveUsers activeUsers = new ActiveUsers(invalidationInterval, sessionTimeout);
-        CommandExecutor commandExecutor = new CommandExecutor(userDatabase, activeUsers);
-        Server server = new Server(port, commandExecutor);
+        Server server = new Server(port);
 
         server.start();
     }
