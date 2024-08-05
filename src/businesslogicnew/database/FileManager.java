@@ -38,8 +38,8 @@ public class FileManager {
     public void writeUser(User user) throws IOException {
         try (var bufferedWriter = Files.newBufferedWriter(
             filePath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
-            String[] values = user.getValues();
-            bufferedWriter.write(String.join(SEPARATOR, values));
+
+            bufferedWriter.write(user.toString());
             bufferedWriter.newLine();
         }
     }
