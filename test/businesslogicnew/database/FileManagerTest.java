@@ -145,4 +145,32 @@ public class FileManagerTest {
         assertFalse(fm.userExists(4));
         assertFalse(fm.userExists(0));
     }
+
+    @Test
+    void testReadIdWorksCorrectly() throws IOException {
+        String line0 = "id,adminStatus,username,\"password\",firstName,lastName,email";
+        String line1 = "1,1,plamen40,\"pass\",Plamen,Petrov,plam@abv.bg";
+        String line2 = "2,0,bobby,\"pass\",Borislav,Petrov,bobi@abv.bg";
+        String line3 = "3,0,teddy,\"pass\",Tony,Petrov,tony@abv.bg";
+
+        Path tempFilePath = Files.createTempFile("tempUserDatabase", ".txt");
+
+        try (var bw = Files.newBufferedWriter(tempFilePath)) {
+            bw.write(line0);
+            bw.newLine();
+
+            bw.write(line1);
+            bw.newLine();
+            bw.write(line2);
+            bw.newLine();
+            bw.write(line3);
+            bw.newLine();
+        }
+
+        FileManager fm = new FileManager(tempFilePath);
+
+        int id = fm.readId();
+
+        assertEquals(3, id);
+    }
 }
