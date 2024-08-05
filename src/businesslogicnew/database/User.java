@@ -35,4 +35,13 @@ public record User(int id, boolean isAdmin, UserCredentials credentials) {
 
         return values;
     }
+
+    @Override
+    public String toString() {
+        String passwordInQuotes = String.format("\"%s\"", credentials.passwordHash());
+        String isAdminStr = isAdmin ? IS_ADMIN : IS_NOT_ADMIN;
+
+        return String.join(",", String.valueOf(id), isAdminStr, credentials.username(),
+            passwordInQuotes, credentials.firstName(), credentials.lastName(), credentials.email());
+    }
 }
