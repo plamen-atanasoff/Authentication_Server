@@ -20,8 +20,10 @@ public class LoginWithPasswordTest {
         String password = "myPass";
         int sessionId = 2;
         String passwordHash = PasswordEncryptor.encryptPassword(password);
+        UserCredentials credentials = mock();
+        when(credentials.passwordHash()).thenReturn(passwordHash);
         User u = mock();
-        when(u.credentials().passwordHash()).thenReturn(passwordHash);
+        when(u.credentials()).thenReturn(credentials);
         UserDatabase db = mock();
         when(db.getUser(username)).thenReturn(u);
         ActiveUsers au = mock();
