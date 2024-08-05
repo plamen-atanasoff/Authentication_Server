@@ -11,13 +11,13 @@ import businesslogicnew.controller.Controller;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.Iterator;
 
 public class Server {
@@ -39,22 +39,23 @@ public class Server {
             configure(serverSocketChannel);
 
             while (isWorking) {
-                int readyChannels = selector.select();
-                if (readyChannels == 0) {
-                    continue;
-                }
+                try {
+                    int readyChannels = selector.select();
+                    if (readyChannels == 0) {
+                        continue;
+                    }
 
-                Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
-                while (keyIterator.hasNext()) {
-                    SelectionKey key = keyIterator.next();
-                    if (key.isReadable()) {
-                        SocketChannel clientChannel = (SocketChannel) key.channel();
+                    Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
+                    while (keyIterator.hasNext()) {
+                        SelectionKey key = keyIterator.next();
+                        if (key.isReadable()) {
+                            SocketChannel clientChannel = (SocketChannel) key.channel();
 
-                        String clientInput = getClientInput(clientChannel);
+                            String clientInput = getClientInput(clientChannel);
 
-                        if (clientInput == null) {
-                            continue;
-                        }
+                            if (clientInput == null) {
+                                continue;
+                            }
 
                         String result;
                         try {
@@ -64,18 +65,21 @@ public class Server {
                             result = e.getMessage();
                         }
 
-                        System.out.println(result);
+                            System.out.println(result);
 
-                        writeClientOutput(clientChannel, result + System.lineSeparator());
-                    } else if (key.isAcceptable()) {
-                        accept(key);
+                            writeClientOutput(clientChannel, result + System.lineSeparator());
+                        } else if (key.isAcceptable()) {
+                            accept(key);
+                        }
+
+                        keyIterator.remove();
                     }
-
-                    keyIterator.remove();
+                } catch (SocketException e) {
+                    System.out.println("Client has disconnected forcefully");
                 }
             }
         } catch (IOException e) {
-            throw new UncheckedIOException("failed to start server", e);
+            throw new UncheckedIOException("Failed to start server", e);
         }
     }
 
