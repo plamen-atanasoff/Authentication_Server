@@ -36,7 +36,10 @@ public class Controller {
     }
 
     public String execute(String input) {
-        Command command = CommandFactory.getInstance().createCommand(input, users, activeUsers);
+        return execute(CommandFactory.getInstance().createCommand(input, users, activeUsers));
+    }
+
+    public String execute(Command command) {
         if (command == null) {
             return WRONG_COMMAND_MESSAGE;
         }
