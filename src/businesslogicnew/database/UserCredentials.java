@@ -27,17 +27,6 @@ public record UserCredentials(String username, String passwordHash, String first
             tokens[LAST_NAME_POSITION], tokens[EMAIL_POSITION]);
     }
 
-    public String[] getValues() {
-        String[] values = new String[FIELDS_COUNT];
-        values[USERNAME_POSITION] = username;
-        values[PASSWORD_HASH_POSITION] = passwordHash;
-        values[FIRST_NAME_POSITION] = firstName;
-        values[LAST_NAME_POSITION] = lastName;
-        values[EMAIL_POSITION] = email;
-
-        return values;
-    }
-
     public int getFieldsCount() {
         return FIELDS_COUNT;
     }
