@@ -1,3 +1,1 @@
 id,adminStatus,username,"password",firstName,lastName,email
-1,0,plamen40,"y�k��o;;n�]�7��",Plamen,Petrov,email@abv.bg
-2,0,filcho45,"y�k��o;;n�]�7��",Filip,Petrov,fifo@gmail.com
