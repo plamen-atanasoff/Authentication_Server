@@ -105,7 +105,7 @@ public class FileManager {
                 .skip(1)
                 .map(l -> Integer.parseInt(l.substring(0, l.indexOf(SEPARATOR))))
                 .max(Integer::compareTo)
-                .orElse(1);
+                .orElse(0);
         }
     }
 }
