@@ -3,8 +3,11 @@ package businesslogicnew.command;
 import java.util.Arrays;
 
 public enum CommandType {
+    // login -–username <username> --password <password>
     LOGIN("login"),
-    REGISTER("register");
+
+    // register --username <username> --password <password> --first-name <firstName> --last-name <lastName> --email <email>
+    REGISTER("register"); //
 
     private final String name;
 
