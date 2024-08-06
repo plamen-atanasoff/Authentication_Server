@@ -1,6 +1,6 @@
 package businesslogicnew.command.commands;
 
-import businesslogicold.passwordencryptor.PasswordEncryptor;
+import businesslogicnew.passwordencryptor.PasswordEncryptor;
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
 import businesslogicnew.database.User;
@@ -9,6 +9,8 @@ import businesslogicnew.users.ActiveUsers;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 
 public class LoginWithPassword implements Command {
@@ -50,7 +52,13 @@ public class LoginWithPassword implements Command {
         }
 
         // check if passwordHash is valid
-        String passwordHashRequest = PasswordEncryptor.encryptPassword(password);
+        String passwordHashRequest = null;
+        try {
+            passwordHashRequest = PasswordEncryptor.generateHash(password);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+
         if (!passwordHashRequest.equals(user.credentials().passwordHash())) {
             return INVALID_LOGIN_CREDENTIALS_MESSAGE;
         }

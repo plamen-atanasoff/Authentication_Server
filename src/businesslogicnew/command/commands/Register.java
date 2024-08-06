@@ -1,6 +1,6 @@
 package businesslogicnew.command.commands;
 
-import businesslogicold.passwordencryptor.PasswordEncryptor;
+import businesslogicnew.passwordencryptor.PasswordEncryptor;
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
 import businesslogicnew.database.UserCredentials;
@@ -8,6 +8,8 @@ import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 
 public class Register implements Command {
@@ -48,7 +50,12 @@ public class Register implements Command {
         }
 
         // hash the password
-        String passwordHash = PasswordEncryptor.encryptPassword(password);
+        String passwordHash = null;
+        try {
+            passwordHash = PasswordEncryptor.generateHash(password);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
 
         // add user to the database
         UserCredentials user = new UserCredentials(username, passwordHash, firstName, lastName, email);

@@ -1,15 +1,18 @@
 package businesslogicnew.database;
 
-import businesslogicold.passwordencryptor.PasswordEncryptor;
+import businesslogicnew.passwordencryptor.PasswordEncryptor;
 import org.junit.jupiter.api.Test;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class UserTest {
     @Test
-    void testOfWorksCorrectly() {
-        String passwordHash = PasswordEncryptor.encryptPassword("mypass");
+    void testOfWorksCorrectly() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String passwordHash = PasswordEncryptor.generateHash("mypass");
         String credentialsLine = "plamen40,\"" + passwordHash + "\",Plamen,Petrov,email@abv.bg";
         String line = "1,0," + credentialsLine;
         UserCredentials credentials = UserCredentials.of(credentialsLine);
@@ -22,8 +25,8 @@ public class UserTest {
     }
 
     @Test
-    void testToStringReturnsCorrectValue() {
-        String passwordHash = PasswordEncryptor.encryptPassword("mypass");
+    void testToStringReturnsCorrectValue() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String passwordHash = PasswordEncryptor.generateHash("mypass");
         String credentialsLine = "plamen40,\"" + passwordHash + "\",Plamen,Petrov,email@abv.bg";
         String line = "1,0," + credentialsLine;
 
