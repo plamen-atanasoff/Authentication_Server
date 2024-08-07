@@ -2,7 +2,7 @@ package businesslogicnew.users;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -18,46 +18,49 @@ import static org.mockito.Mockito.when;
 public class ActiveUsersTest {
     @Test
     void testAddSessionWorksCorrectly() {
-        Set<Integer> sessions = mock();
+        Map<Integer, Integer> sessions = mock();
+        int userId = 2;
 
         ActiveUsers activeUsers = new ActiveUsers(300, sessions);
 
-        activeUsers.addSession();
+        activeUsers.addSession(userId);
 
-        verify(sessions, atMostOnce()).add(anyInt());
+        verify(sessions, atMostOnce()).put(eq(userId), anyInt());
     }
 
     @Test
     void testRemoveSessionWorksCorrectly() {
-        Set<Integer> sessions = mock();
+        Map<Integer, Integer> sessions = mock();
+        int userId = 2;
 
         ActiveUsers activeUsers = new ActiveUsers(300, sessions);
 
-        int id = activeUsers.addSession();
-        activeUsers.removeSession(id);
+        activeUsers.addSession(userId);
+        activeUsers.removeSession(userId);
 
-        verify(sessions, atMostOnce()).add(anyInt());
-        verify(sessions, atMostOnce()).remove(id);
+        verify(sessions, atMostOnce()).put(eq(userId), anyInt());
+        verify(sessions, atMostOnce()).remove(userId);
     }
 
     @Test
     void testSessionExistsWorksCorrectly() {
-        Set<Integer> sessions = mock();
+        Map<Integer, Integer> sessions = mock();
+        int userId = 2;
 
         ActiveUsers activeUsers = new ActiveUsers(300, sessions);
 
-        int id = activeUsers.addSession();
+        activeUsers.addSession(userId);
 
-        when(sessions.contains(id)).thenReturn(true);
+        when(sessions.containsKey(userId)).thenReturn(true);
 
-        assertTrue(activeUsers.sessionExists(id));
+        assertTrue(activeUsers.userIsLoggedIn(userId));
 
-        verify(sessions, atMostOnce()).add(anyInt());
+        verify(sessions, atMostOnce()).put(eq(userId), anyInt());
     }
 
     @Test
     void testShutdownWorksCorrectly() {
-        Set<Integer> sessions = mock();
+        Map<Integer, Integer> sessions = mock();
         ScheduledExecutorService executor = mock();
 
         ActiveUsers activeUsers = new ActiveUsers(300, sessions, executor);
@@ -70,16 +73,17 @@ public class ActiveUsersTest {
     @Test
     void testSessionTimeoutWorksCorrectly() throws InterruptedException {
         int sessionTimeout = 1;
-        Set<Integer> sessions = mock();
+        Map<Integer, Integer> sessions = mock();
         ScheduledExecutorService executor = mock();
+        int userId = 2;
 
         ActiveUsers activeUsers = new ActiveUsers(sessionTimeout, sessions, executor);
 
-        activeUsers.addSession();
+        activeUsers.addSession(userId);
         Thread.sleep(sessionTimeout * 1000);
 
         verify(executor, atMostOnce()).schedule(any(Runnable.class), eq(sessionTimeout), eq(TimeUnit.SECONDS));
-        verify(sessions, atMostOnce()).add(anyInt());
-        verify(sessions, atMostOnce()).remove(anyInt());
+        verify(sessions, atMostOnce()).put(eq(userId), anyInt());
+        verify(sessions, atMostOnce()).remove(userId);
     }
 }

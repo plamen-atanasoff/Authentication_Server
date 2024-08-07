@@ -1,7 +1,7 @@
 package businesslogicnew.users;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +13,7 @@ public class ActiveUsers {
 
     private final long sessionTimeout;
 
-    private final Set<Integer> sessions;
+    private final Map<Integer, Integer> sessions;
 
     private final ScheduledExecutorService executor;
 
@@ -22,14 +22,14 @@ public class ActiveUsers {
     }
 
     public ActiveUsers(long sessionTimeout) {
-        this(sessionTimeout, new HashSet<>());
+        this(sessionTimeout, new HashMap<>());
     }
 
-    public ActiveUsers(long sessionTimeout, Set<Integer> activeUsers) {
+    public ActiveUsers(long sessionTimeout, Map<Integer, Integer> activeUsers) {
         this(sessionTimeout, activeUsers, Executors.newSingleThreadScheduledExecutor());
     }
 
-    public ActiveUsers(long sessionTimeout, Set<Integer> activeUsers, ScheduledExecutorService executor) {
+    public ActiveUsers(long sessionTimeout, Map<Integer, Integer> activeUsers, ScheduledExecutorService executor) {
         if (sessionTimeout <= 0) {
             throw new IllegalArgumentException("SessionTimeout must be a positive number");
         }
@@ -39,23 +39,27 @@ public class ActiveUsers {
         this.executor = executor;
     }
 
-    public int addSession() {
-        sessions.add(sessionId);
-        scheduleSessionExpiration(sessionId);
+    public int addSession(int userId) {
+        sessions.put(userId, sessionId);
+        scheduleSessionExpiration(userId);
 
         return sessionId++;
     }
 
-    public void removeSession(int sessionId) {
-        sessions.remove(sessionId);
+    public void removeSession(int userId) {
+        sessions.remove(userId);
+    }
+
+    public boolean userIsLoggedIn(int userId) {
+        return sessions.containsKey(userId);
     }
 
     public boolean sessionExists(int sessionId) {
-        return sessions.contains(sessionId);
+        return sessions.containsValue(sessionId);
     }
 
-    private void scheduleSessionExpiration(int sessionId) {
-        executor.schedule(() -> removeSession(sessionId), sessionTimeout, TimeUnit.SECONDS);
+    private void scheduleSessionExpiration(int userId) {
+        executor.schedule(() -> removeSession(userId), sessionTimeout, TimeUnit.SECONDS);
     }
 
     public void shutdown() {

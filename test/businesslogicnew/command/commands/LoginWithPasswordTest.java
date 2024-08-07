@@ -21,15 +21,17 @@ public class LoginWithPasswordTest {
         String username = "pavel123";
         String password = "myPass";
         int sessionId = 2;
+        int userId = 3;
         String passwordHash = PasswordEncryptor.generateHash(password);
         UserCredentials credentials = mock();
         when(credentials.passwordHash()).thenReturn(passwordHash);
         User u = mock();
         when(u.credentials()).thenReturn(credentials);
+        when(u.id()).thenReturn(userId);
         UserDatabase db = mock();
         when(db.getUser(username)).thenReturn(u);
         ActiveUsers au = mock();
-        when(au.addSession()).thenReturn(sessionId);
+        when(au.addSession(userId)).thenReturn(sessionId);
 
         LoginWithPassword command = new LoginWithPassword(username, password, db, au);
 
