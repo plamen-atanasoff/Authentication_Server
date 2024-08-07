@@ -64,7 +64,7 @@ public class LoginWithPassword implements Command {
         }
 
         // get valid session id
-        int sessionId = activeUsers.addSession();
+        int sessionId = activeUsers.addSession(user.id());
 
         return String.valueOf(sessionId);
     }
