@@ -52,7 +52,7 @@ public class LoginWithPassword implements Command {
         }
 
         // check if passwordHash is valid
-        String passwordHashRequest = null;
+        String passwordHashRequest;
         try {
             passwordHashRequest = PasswordEncryptor.generateHash(password);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
@@ -73,7 +73,7 @@ public class LoginWithPassword implements Command {
         private static final int ARGS_COUNT = 2; // username, password
 
         protected LoginWithPasswordCreator() {
-            super(CommandType.LOGIN);
+            super(CommandType.LOGIN_PASSWORD);
         }
         @Override
         public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers) {

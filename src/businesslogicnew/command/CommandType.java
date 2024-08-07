@@ -4,10 +4,13 @@ import java.util.Arrays;
 
 public enum CommandType {
     // login -–username <username> --password <password>
-    LOGIN("login"),
+    LOGIN_PASSWORD("login"),
 
     // register --username <username> --password <password> --first-name <firstName> --last-name <lastName> --email <email>
-    REGISTER("register"); //
+    REGISTER("register"),
+
+    // login -–session-id <sessionId>
+    LOGIN_SESSION_ID("login");
 
     private final String name;
 

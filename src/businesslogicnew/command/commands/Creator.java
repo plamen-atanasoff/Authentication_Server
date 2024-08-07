@@ -8,8 +8,12 @@ import businesslogicnew.users.ActiveUsers;
 import java.util.Map;
 
 public enum Creator {
-    LOGIN(new LoginWithPassword.LoginWithPasswordCreator()),
-    REGISTER(new Register.RegisterCreator());
+
+    LOGIN_PASSWORD(new LoginWithPassword.LoginWithPasswordCreator()),
+
+    REGISTER(new Register.RegisterCreator()),
+
+    LOGIN_SESSION_ID(new LoginWithSessionId.LoginWithSessionIdCreator());
 
     private final CommandCreator creator;
 

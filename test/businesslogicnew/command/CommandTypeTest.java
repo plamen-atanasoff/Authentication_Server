@@ -9,6 +9,6 @@ public class CommandTypeTest {
     void testGetAsTypeReturnsCorrectly() {
         CommandType res = CommandType.getAsType("login");
 
-        assertEquals(CommandType.LOGIN, res, "Returned type should be correct");
+        assertEquals(CommandType.LOGIN_PASSWORD, res, "Returned type should be correct");
     }
 }

@@ -30,7 +30,20 @@ public class CommandFactory {
             throw new IllegalArgumentException("Input is not in the right format");
         }
 
-        CommandType type = CommandType.getAsType(input.substring(0, separatingIndex));
+        String command = input.substring(0, separatingIndex);
+        Map<String, String> tokens = Tokenizer.tokenizeFromSocketChannel(
+            input.substring(separatingIndex).trim().substring(SEPARATOR_SYMBOLS_COUNT));
+
+        CommandType type = null;
+        if (command.equals("login")) {
+            if (tokens.size() == 2) {
+                type = CommandType.LOGIN_PASSWORD;
+            } else if (tokens.size() == 1) {
+                type = CommandType.LOGIN_SESSION_ID;
+            }
+        } else {
+            type = CommandType.getAsType(command);
+        }
 
         if (type == null) {
             throw new RuntimeException("Command does not exist");
@@ -42,10 +55,7 @@ public class CommandFactory {
             throw new RuntimeException(String.format(FORMAT_STRING, type));
         }
 
-        return creator.create(
-                Tokenizer.tokenizeFromSocketChannel(
-                    input.substring(separatingIndex).trim().substring(SEPARATOR_SYMBOLS_COUNT)),
-                users, activeUsers);
+        return creator.create(tokens, users, activeUsers);
     }
 
     private CommandFactory() {
