@@ -5,6 +5,7 @@ import businesslogicnew.command.CommandType;
 import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 
+import java.nio.channels.SelectionKey;
 import java.util.Map;
 
 public enum Creator {
@@ -34,7 +35,8 @@ public enum Creator {
             this.type = type;
         }
 
-        public abstract Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers);
+        public abstract Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers,
+                                       SelectionKey key);
 
         public CommandType getType() {
             return type;

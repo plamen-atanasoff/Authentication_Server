@@ -6,6 +6,7 @@ import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 
 import java.io.IOException;
+import java.nio.channels.SelectionKey;
 import java.nio.file.Path;
 
 public class Controller {
@@ -35,8 +36,8 @@ public class Controller {
         return controller;
     }
 
-    public String execute(String input) {
-        return execute(CommandFactory.getInstance().createCommand(input, users, activeUsers));
+    public String execute(String input, SelectionKey key) {
+        return execute(CommandFactory.getInstance().createCommand(input, users, activeUsers, key));
     }
 
     public String execute(Command command) {

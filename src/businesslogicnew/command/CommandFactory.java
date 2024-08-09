@@ -5,6 +5,7 @@ import businesslogicnew.database.UserDatabase;
 import businesslogicnew.tokenizer.Tokenizer;
 import businesslogicnew.users.ActiveUsers;
 
+import java.nio.channels.SelectionKey;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class CommandFactory {
         return instance;
     }
 
-    public Command createCommand(String input, UserDatabase users, ActiveUsers activeUsers) {
+    public Command createCommand(String input, UserDatabase users, ActiveUsers activeUsers, SelectionKey key) {
         int separatingIndex = input.indexOf(DELIMITER);
 
         if (separatingIndex == -1) {
@@ -55,7 +56,7 @@ public class CommandFactory {
             throw new RuntimeException(String.format(FORMAT_STRING, type));
         }
 
-        return creator.create(tokens, users, activeUsers);
+        return creator.create(tokens, users, activeUsers, key);
     }
 
     private CommandFactory() {

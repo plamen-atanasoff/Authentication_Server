@@ -5,6 +5,7 @@ import businesslogicnew.command.CommandType;
 import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 
+import java.nio.channels.SelectionKey;
 import java.util.Map;
 
 public class LoginWithSessionId implements Command {
@@ -40,7 +41,7 @@ public class LoginWithSessionId implements Command {
             super(CommandType.LOGIN_SESSION_ID);
         }
         @Override
-        public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers) {
+        public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers, SelectionKey key) {
             if (input.size() != ARGS_COUNT) {
                 throw new RuntimeException(String.format(FORMAT_STRING, ARGS_COUNT));
             }

@@ -8,11 +8,14 @@ import businesslogicnew.users.ActiveUsers;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.channels.SelectionKey;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class LoginWithPasswordTest {
@@ -32,10 +35,14 @@ public class LoginWithPasswordTest {
         when(db.getUser(username)).thenReturn(u);
         ActiveUsers au = mock();
         when(au.addSession(userId)).thenReturn(sessionId);
+        SelectionKey key = mock();
 
-        LoginWithPassword command = new LoginWithPassword(username, password, db, au);
+        LoginWithPassword command = new LoginWithPassword(username, password, db, au, key);
 
         String res = command.execute();
+
+        verify(key, atMostOnce()).attachment();
+        verify(key, atMostOnce()).attach(0);
 
         assertEquals(sessionId, Integer.parseInt(res));
     }

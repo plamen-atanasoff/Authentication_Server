@@ -10,11 +10,12 @@ import static org.mockito.Mockito.mock;
 public class CommandFactoryTest {
     @Test
     void testCommandIsCreatedCorrectly() {
+
         UserDatabase users = mock();
         ActiveUsers activeUsers = mock();
 
         Command command = CommandFactory.getInstance().createCommand(
-                "login -–username plamen100 --password password", users, activeUsers);
+                "login -–username plamen100 --password password", users, activeUsers, null);
 
         assertNotNull(command, "CommandCreator does not exist");
 

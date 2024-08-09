@@ -51,7 +51,7 @@ public class Server {
 
                             String result;
                             try {
-                                result = Controller.getInstance().execute(clientInput);
+                                result = Controller.getInstance().execute(clientInput, key);
                             } catch (Exception e) {
                                 result = e.toString();
                             }
