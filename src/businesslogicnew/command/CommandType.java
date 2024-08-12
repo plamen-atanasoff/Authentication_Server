@@ -10,7 +10,11 @@ public enum CommandType {
     REGISTER("register"),
 
     // login -–session-id <sessionId>
-    LOGIN_SESSION_ID("login");
+    LOGIN_SESSION_ID("login"),
+
+    // only session-id is a required parameter
+    // update-user -–session-id <session-id>  -–new-username <newUsername> --new-first-name <newFirstName> --new-last-name <newLastName> --new-email <email>
+    UPDATE("update-user");
 
     private final String name;
 

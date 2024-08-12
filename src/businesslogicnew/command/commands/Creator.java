@@ -14,7 +14,9 @@ public enum Creator {
 
     REGISTER(new Register.RegisterCreator()),
 
-    LOGIN_SESSION_ID(new LoginWithSessionId.LoginWithSessionIdCreator());
+    LOGIN_SESSION_ID(new LoginWithSessionId.LoginWithSessionIdCreator()),
+
+    UPDATE(new Update.UpdateCreator());
 
     private final CommandCreator creator;
 
