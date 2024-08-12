@@ -29,17 +29,31 @@ public class UserDatabase {
         return fileManager.readUser(username);
     }
 
-    public void addUser(UserCredentials userCredentials) throws IOException {
+    public User addUser(UserCredentials userCredentials) throws IOException {
         User user = new User(id++, false, userCredentials);
 
         fileManager.writeUser(user);
+
+        return user;
     }
 
-    public void updateUser(User user) throws IOException {
-        fileManager.updateUser(user);
+    public User updateUser(User user) throws IOException {
+        if (fileManager.userExists(user.id())) {
+            fileManager.updateUser(user);
+        } else {
+            fileManager.writeUser(user);
+        }
+
+        return user;
     }
 
-    public void deleteUser(int userId) throws IOException {
-        fileManager.deleteUser(userId);
+    public boolean deleteUser(int userId) throws IOException {
+        if (fileManager.userExists(userId)) {
+            fileManager.deleteUser(userId);
+
+            return true;
+        }
+
+        return false;
     }
 }
