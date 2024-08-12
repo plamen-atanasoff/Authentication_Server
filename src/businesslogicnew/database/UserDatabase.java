@@ -29,6 +29,10 @@ public class UserDatabase {
         return fileManager.readUser(username);
     }
 
+    public User getUser(int userId) throws IOException {
+        return fileManager.readUser(userId);
+    }
+
     public User addUser(UserCredentials userCredentials) throws IOException {
         User user = new User(id++, false, userCredentials);
 

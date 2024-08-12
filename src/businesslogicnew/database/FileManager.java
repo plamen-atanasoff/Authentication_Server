@@ -37,6 +37,17 @@ public class FileManager {
         }
     }
 
+    public User readUser(int userId) throws IOException {
+        try (var bufferedReader = Files.newBufferedReader(filePath)) {
+            return bufferedReader.lines()
+                .skip(1)
+                .map(User::of)
+                .filter(u -> u.id() == userId)
+                .findFirst()
+                .orElse(null);
+        }
+    }
+
     public void writeUser(User user) throws IOException {
         try (var bufferedWriter = Files.newBufferedWriter(
             filePath, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
