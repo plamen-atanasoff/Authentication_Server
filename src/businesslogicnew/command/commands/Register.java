@@ -26,7 +26,6 @@ public class Register implements Command {
 
     private final String email;
 
-    @SuppressWarnings("FieldCanBeLocal")
     private final UserDatabase users;
 
     public Register(String username, String password, String firstName, String lastName, String email,
@@ -70,6 +69,19 @@ public class Register implements Command {
     }
 
     public static class RegisterCreator extends Creator.CommandCreator {
+
+        private static final String MISSING_ARGUMENTS_MESSAGE = "Missing argument keys";
+
+        private static final String USERNAME_STRING = "username";
+
+        private static final String PASSWORD_STRING = "password";
+
+        private static final String FIRST_NAME_STRING = "first-name";
+
+        private static final String LAST_NAME_STRING = "last-name";
+
+        private static final String EMAIL_STRING = "email";
+
         private static final int ARGS_COUNT = 5; // username, password, first-name, last-name, email
 
         protected RegisterCreator() {
@@ -82,13 +94,14 @@ public class Register implements Command {
                 throw new RuntimeException(String.format(FORMAT_STRING, ARGS_COUNT));
             }
 
-            if (!input.containsKey("username") || !input.containsKey("password") || !input.containsKey("first-name")
-            || !input.containsKey("last-name") || !input.containsKey("email")) {
-                throw new RuntimeException("Username or password is missing");
+            if (!input.containsKey(USERNAME_STRING) || !input.containsKey(PASSWORD_STRING) ||
+                !input.containsKey(FIRST_NAME_STRING) || !input.containsKey(LAST_NAME_STRING) ||
+                !input.containsKey(EMAIL_STRING)) {
+                throw new RuntimeException(MISSING_ARGUMENTS_MESSAGE);
             }
 
-            return new Register(input.get("username"), input.get("password"), input.get("first-name"),
-                input.get("last-name"), input.get("email"), users);
+            return new Register(input.get(USERNAME_STRING), input.get(PASSWORD_STRING), input.get(FIRST_NAME_STRING),
+                input.get(LAST_NAME_STRING), input.get(EMAIL_STRING), users);
         }
     }
 }

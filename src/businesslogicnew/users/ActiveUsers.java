@@ -8,6 +8,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ActiveUsers {
+
+    private static final int TERMINATION_TIMEOUT_SECONDS = 60;
+    private static final String ILLEGAL_SESSION_TIMEOUT_MESSAGE = "SessionTimeout must be a positive number";
+
     private static final long DEFAULT_SESSION_TIMEOUT_SECONDS = 10;
 
     private static final long DEFAULT_LOCK_CLIENT_SECONDS = 15;
@@ -37,7 +41,7 @@ public class ActiveUsers {
     public ActiveUsers(long sessionTimeout, Map<Integer, Integer> activeUsers, ScheduledExecutorService executor,
                        Set<Integer> lockedUsers) {
         if (sessionTimeout <= 0) {
-            throw new IllegalArgumentException("SessionTimeout must be a positive number");
+            throw new IllegalArgumentException(ILLEGAL_SESSION_TIMEOUT_MESSAGE);
         }
 
         this.sessionTimeout = sessionTimeout;
@@ -89,7 +93,7 @@ public class ActiveUsers {
         executor.shutdown();
         try {
             //noinspection ResultOfMethodCallIgnored
-            executor.awaitTermination(60, TimeUnit.SECONDS);
+            executor.awaitTermination(TERMINATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         } catch(InterruptedException e) {
             executor.shutdownNow();
         }

@@ -10,6 +10,8 @@ import java.util.List;
 
 public class FileManager {
 
+    private static final String ILLEGAL_ARGUMENT_MESSAGE = "File name is null";
+
     private final Path filePath;
 
     private static final String SEPARATOR = ",";
@@ -18,7 +20,7 @@ public class FileManager {
 
     public FileManager(Path filePath) {
         if (filePath == null) {
-            throw new IllegalArgumentException("File name is null");
+            throw new IllegalArgumentException(ILLEGAL_ARGUMENT_MESSAGE);
         }
 
         this.filePath = filePath;

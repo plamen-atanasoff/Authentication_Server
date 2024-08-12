@@ -10,6 +10,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.file.Path;
 
 public class Controller {
+
+    private static final String ILLEGAL_ARGUMENTS_MESSAGE = "users or activeUsers is null";
+
     private static final String USER_DATABASE_FILE_NAME = "userDatabase.txt";
 
     private static final String WRONG_COMMAND_MESSAGE = "Wrong command";
@@ -50,7 +53,7 @@ public class Controller {
 
     private Controller(UserDatabase users, ActiveUsers activeUsers) {
         if (users == null || activeUsers == null) {
-            throw new IllegalArgumentException("users or activeUsers is null");
+            throw new IllegalArgumentException(ILLEGAL_ARGUMENTS_MESSAGE);
         }
 
         this.users = users;

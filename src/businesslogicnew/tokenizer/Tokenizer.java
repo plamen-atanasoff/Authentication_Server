@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Tokenizer {
+
+    private static final String WRONG_TOKEN_FORMAT_MESSAGE = "Token is not in the right format";
+
     private static final String REGEX_TOKENS = "\\s+";
+
     private static final String REGEX_SOCKET_CHANNEL = "\\s+--";
 
     public static Map<String, String> tokenizeFromSocketChannel(String line) {
@@ -15,7 +19,7 @@ public class Tokenizer {
         for (String token : tokens) {
             String[] kvp = token.split(REGEX_TOKENS);
             if (kvp.length != 2) {
-                throw new RuntimeException("Token is not in the right format");
+                throw new RuntimeException(WRONG_TOKEN_FORMAT_MESSAGE);
             }
 
             res.put(kvp[0], kvp[1]);

@@ -10,10 +10,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommandFactory {
+
+    private static final String COMMAND_DOES_NOT_EXIST_MESSAGE = "Command does not exist";
+
+    private static final int LOGIN_PASSWORD_TOKENS_COUNT = 2;
+
+    private static final int LOGIN_SESSION_ID_TOKENS_COUNT = 1;
+
+    private static final String WRONG_FORMAT_MESSAGE = "Input is not in the right format";
+
+    private static final String LOGIN_STRING = "login";
+
     private static final int SEPARATOR_SYMBOLS_COUNT = 2;
+
     private static final String DELIMITER = " ";
+
     private static final String FORMAT_STRING = "Creator with %s type does not exist";
+
     private static CommandFactory instance;
+
     private final Map<CommandType, Creator.CommandCreator> creators;
 
     public static CommandFactory getInstance() {
@@ -28,7 +43,7 @@ public class CommandFactory {
         int separatingIndex = input.indexOf(DELIMITER);
 
         if (separatingIndex == -1) {
-            throw new IllegalArgumentException("Input is not in the right format");
+            throw new IllegalArgumentException(WRONG_FORMAT_MESSAGE);
         }
 
         String command = input.substring(0, separatingIndex);
@@ -36,10 +51,10 @@ public class CommandFactory {
             input.substring(separatingIndex).trim().substring(SEPARATOR_SYMBOLS_COUNT));
 
         CommandType type = null;
-        if (command.equals("login")) {
-            if (tokens.size() == 2) {
+        if (command.equals(LOGIN_STRING)) {
+            if (tokens.size() == LOGIN_PASSWORD_TOKENS_COUNT) {
                 type = CommandType.LOGIN_PASSWORD;
-            } else if (tokens.size() == 1) {
+            } else if (tokens.size() == LOGIN_SESSION_ID_TOKENS_COUNT) {
                 type = CommandType.LOGIN_SESSION_ID;
             }
         } else {
@@ -47,7 +62,7 @@ public class CommandFactory {
         }
 
         if (type == null) {
-            throw new RuntimeException("Command does not exist");
+            throw new RuntimeException(COMMAND_DOES_NOT_EXIST_MESSAGE);
         }
 
         Creator.CommandCreator creator = creators.get(type);

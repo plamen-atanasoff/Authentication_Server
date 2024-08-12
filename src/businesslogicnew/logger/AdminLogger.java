@@ -9,6 +9,8 @@ import java.util.logging.SimpleFormatter;
 
 public class AdminLogger {
 
+    private static final String ILLEGAL_ARGUMENT_MESSAGE = "handler or logger is null";
+
     private static final String LOG_FILE_NAME = "logs.txt";
 
     private static Logger logger;
@@ -23,7 +25,7 @@ public class AdminLogger {
 
     public static void setup(Formatter formatter, FileHandler handler, Logger logger) {
         if (handler == null || logger == null) {
-            throw new IllegalArgumentException("handler or logger is null");
+            throw new IllegalArgumentException(ILLEGAL_ARGUMENT_MESSAGE);
         }
 
         if (AdminLogger.logger != null) {

@@ -1,7 +1,10 @@
 package businesslogicnew.database;
 
 public record User(int id, boolean isAdmin, UserCredentials credentials) {
-    private static final char SEPARATOR = ',';
+
+    private static final String PASSWORD_FORMAT = "\"%s\"";
+
+    private static final String SEPARATOR = ",";
 
     private static final String IS_ADMIN = "1";
 
@@ -18,10 +21,10 @@ public record User(int id, boolean isAdmin, UserCredentials credentials) {
 
     @Override
     public String toString() {
-        String passwordInQuotes = String.format("\"%s\"", credentials.passwordHash());
+        String passwordInQuotes = String.format(PASSWORD_FORMAT, credentials.passwordHash());
         String isAdminStr = isAdmin ? IS_ADMIN : IS_NOT_ADMIN;
 
-        return String.join(",", String.valueOf(id), isAdminStr, credentials.username(),
+        return String.join(SEPARATOR, String.valueOf(id), isAdminStr, credentials.username(),
             passwordInQuotes, credentials.firstName(), credentials.lastName(), credentials.email());
     }
 }

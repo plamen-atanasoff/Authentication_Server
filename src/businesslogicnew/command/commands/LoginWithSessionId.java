@@ -35,6 +35,11 @@ public class LoginWithSessionId implements Command {
     }
 
     public static class LoginWithSessionIdCreator extends Creator.CommandCreator {
+
+        private static final String ILLEGAL_ARGUMENTS_MESSAGE = "SessionId is missing";
+
+        private static final String SESSION_ID_STRING = "session-id";
+
         private static final int ARGS_COUNT = 1; // session-id
 
         protected LoginWithSessionIdCreator() {
@@ -46,11 +51,11 @@ public class LoginWithSessionId implements Command {
                 throw new RuntimeException(String.format(FORMAT_STRING, ARGS_COUNT));
             }
 
-            if (!input.containsKey("session-id")) {
-                throw new RuntimeException("SessionId is missing");
+            if (!input.containsKey(SESSION_ID_STRING)) {
+                throw new RuntimeException(ILLEGAL_ARGUMENTS_MESSAGE);
             }
 
-            return new LoginWithSessionId(Integer.parseInt(input.get("session-id")), activeUsers);
+            return new LoginWithSessionId(Integer.parseInt(input.get(SESSION_ID_STRING)), activeUsers);
         }
     }
 }

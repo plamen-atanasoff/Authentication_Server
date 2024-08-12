@@ -15,11 +15,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 public class Server {
+    private static final String CLIENT_DISCONNECTED_MESSAGE = "Client has disconnected forcefully";
+
+    private static final String SERVER_FAILED_STARTING_MESSAGE = "Failed to start server";
+
     private static final int BUFFER_SIZE = 1024;
+
     private static final String HOST = "localhost";
+
     private Selector selector;
+
     private ByteBuffer buffer;
+
     private final int port;
+
     private boolean isWorking;
 
     public Server(int port) {
@@ -66,11 +75,11 @@ public class Server {
                         keyIterator.remove();
                     }
                 } catch (SocketException e) {
-                    System.out.println("Client has disconnected forcefully");
+                    System.out.println(CLIENT_DISCONNECTED_MESSAGE);
                 }
             }
         } catch (IOException e) {
-            throw new UncheckedIOException("Failed to start server", e);
+            throw new UncheckedIOException(SERVER_FAILED_STARTING_MESSAGE, e);
         }
     }
 

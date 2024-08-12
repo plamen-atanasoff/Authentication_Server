@@ -15,6 +15,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 
 public class LoginWithPassword implements Command {
+    private static final String ILLEGAL_ARGUMENTS_MESSAGE = "Username or password is null";
 
     private static final int MAX_FAILED_LOGINS_COUNT = 3;
 
@@ -37,7 +38,7 @@ public class LoginWithPassword implements Command {
     public LoginWithPassword(String username, String password, UserDatabase users, ActiveUsers activeUsers,
                              SelectionKey key) {
         if (username == null || password == null) {
-            throw new IllegalArgumentException("Username or password is null");
+            throw new IllegalArgumentException(ILLEGAL_ARGUMENTS_MESSAGE);
         }
 
         this.username = username;
@@ -113,6 +114,13 @@ public class LoginWithPassword implements Command {
     }
 
     public static class LoginWithPasswordCreator extends Creator.CommandCreator {
+
+        private static final String ILLEGAL_ARGUMENTS_MESSAGE = "Username or password is missing";
+
+        private static final String USERNAME_STRING = "username";
+
+        private static final String PASSWORD_STRING = "password";
+
         private static final int ARGS_COUNT = 2; // username, password
 
         protected LoginWithPasswordCreator() {
@@ -125,11 +133,11 @@ public class LoginWithPassword implements Command {
                 throw new RuntimeException(String.format(FORMAT_STRING, ARGS_COUNT));
             }
 
-            if (!input.containsKey("username") || !input.containsKey("password")) {
-                throw new RuntimeException("Username or password is missing");
+            if (!input.containsKey(USERNAME_STRING) || !input.containsKey(PASSWORD_STRING)) {
+                throw new RuntimeException(ILLEGAL_ARGUMENTS_MESSAGE);
             }
 
-            return new LoginWithPassword(input.get("username"), input.get("password"), users, activeUsers, key);
+            return new LoginWithPassword(input.get(USERNAME_STRING), input.get(PASSWORD_STRING), users, activeUsers, key);
         }
     }
 }

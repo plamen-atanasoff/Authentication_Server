@@ -10,6 +10,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Client {
+
+    private static final String CLIENT_ENTER_MESSAGE_PROMPT = "Enter message: ";
+
+    private static final String QUIT_STRING = "quit";
+
+    private static final String SERVER_REPLY_MESSAGE_FORMAT = "The server replied <%s>";
+
+    private static final String SERVER_COMMUNICATION_ERROR_MESSAGE = "There is a problem with the network communication";
     private static final String SERVER_HOST = "localhost";
     private final int serverPort;
 
@@ -26,20 +34,21 @@ public class Client {
             socketChannel.connect(new InetSocketAddress(SERVER_HOST, serverPort));
 
             while (true) {
-                System.out.print("Enter message: ");
+                System.out.print(CLIENT_ENTER_MESSAGE_PROMPT);
                 String message = scanner.nextLine();
 
-                if ("quit".equals(message)) {
+                if (QUIT_STRING.equals(message)) {
                     break;
                 }
 
                 writer.println(message);
 
                 String reply = reader.readLine();
-                System.out.println("The server replied <" + reply + ">");
+                System.out.printf(SERVER_REPLY_MESSAGE_FORMAT, reply);
+                System.out.println();
             }
         } catch (IOException e) {
-            throw new RuntimeException("There is a problem with the network communication", e);
+            throw new RuntimeException(SERVER_COMMUNICATION_ERROR_MESSAGE, e);
         }
     }
 
