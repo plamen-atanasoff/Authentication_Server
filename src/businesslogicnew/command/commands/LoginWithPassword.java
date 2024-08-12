@@ -9,7 +9,9 @@ import businesslogicnew.users.ActiveUsers;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
@@ -62,13 +64,21 @@ public class LoginWithPassword implements Command {
             return USER_DOES_NOT_EXIST_MESSAGE;
         }
 
+        // get socket channel
+        SocketAddress socketAddress;
+        try {
+            socketAddress = getSocketAddress(key);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         // check if user is currently locked
-        if (activeUsers.isLocked(user.id())) {
+        if (activeUsers.isLocked(socketAddress)) {
             return CLIENT_IS_LOCKED_MESSAGE;
         }
 
         // validate password
-        if(!passwordIsValid(user)) {
+        if(!passwordIsValid(user, socketAddress)) {
             return INVALID_LOGIN_CREDENTIALS_MESSAGE;
         }
 
@@ -78,7 +88,7 @@ public class LoginWithPassword implements Command {
         return String.valueOf(sessionId);
     }
 
-    private boolean passwordIsValid(User user) {
+    private boolean passwordIsValid(User user, SocketAddress socketAddress) {
         // get password hash
         String passwordHashRequest;
         try {
@@ -100,7 +110,7 @@ public class LoginWithPassword implements Command {
             assert failedLoginsCount <= MAX_FAILED_LOGINS_COUNT;
 
             if (failedLoginsCount == MAX_FAILED_LOGINS_COUNT) {
-                activeUsers.lockClient(user.id());
+                activeUsers.lockClient(socketAddress);
 
                 key.attach(0);
             } else {
@@ -111,6 +121,14 @@ public class LoginWithPassword implements Command {
         }
 
         return true;
+    }
+
+    private static SocketAddress getSocketAddress(SelectionKey key) throws IOException {
+        if (key.isValid() && key.channel() instanceof SocketChannel channel) {
+            return channel.getRemoteAddress();
+        } else {
+            return null;
+        }
     }
 
     public static class LoginWithPasswordCreator extends Creator.CommandCreator {

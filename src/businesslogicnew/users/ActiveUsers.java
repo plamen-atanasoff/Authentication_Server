@@ -1,5 +1,6 @@
 package businesslogicnew.users;
 
+import java.net.SocketAddress;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class ActiveUsers {
 
     private static final int TERMINATION_TIMEOUT_SECONDS = 60;
+
     private static final String ILLEGAL_SESSION_TIMEOUT_MESSAGE = "SessionTimeout must be a positive number";
 
     private static final long DEFAULT_SESSION_TIMEOUT_SECONDS = 10;
@@ -24,7 +26,7 @@ public class ActiveUsers {
 
     private final ScheduledExecutorService executor;
 
-    private final Set<Integer> lockedClients;
+    private final Set<SocketAddress> lockedClients;
 
     public ActiveUsers() {
         this(DEFAULT_SESSION_TIMEOUT_SECONDS);
@@ -34,12 +36,12 @@ public class ActiveUsers {
         this(sessionTimeout, new ConcurrentHashMap<>(), ConcurrentHashMap.newKeySet());
     }
 
-    public ActiveUsers(long sessionTimeout, Map<Integer, Integer> activeUsers, Set<Integer> lockedUsers) {
-        this(sessionTimeout, activeUsers, Executors.newSingleThreadScheduledExecutor(), lockedUsers);
+    public ActiveUsers(long sessionTimeout, Map<Integer, Integer> activeUsers, Set<SocketAddress> lockedClients) {
+        this(sessionTimeout, activeUsers, Executors.newSingleThreadScheduledExecutor(), lockedClients);
     }
 
     public ActiveUsers(long sessionTimeout, Map<Integer, Integer> activeUsers, ScheduledExecutorService executor,
-                       Set<Integer> lockedUsers) {
+                       Set<SocketAddress> lockedClients) {
         if (sessionTimeout <= 0) {
             throw new IllegalArgumentException(ILLEGAL_SESSION_TIMEOUT_MESSAGE);
         }
@@ -47,46 +49,40 @@ public class ActiveUsers {
         this.sessionTimeout = sessionTimeout;
         this.sessions = activeUsers;
         this.executor = executor;
-        this.lockedClients = lockedUsers;
+        this.lockedClients = lockedClients;
     }
 
     public int addSession(int userId) {
-        sessions.put(userId, sessionId);
-        scheduleSessionExpiration(userId, sessionId);
+        sessions.put(sessionId, userId);
+        scheduleSessionExpiration(sessionId, userId);
 
         return sessionId++;
     }
 
-    public void removeSession(int userId) {
-        sessions.remove(userId);
-    }
-
-    public boolean userIsLoggedIn(int userId) {
-        return sessions.containsKey(userId);
-    }
-
     public boolean sessionExists(int sessionId) {
-        return sessions.containsValue(sessionId);
+        return sessions.containsKey(sessionId);
     }
 
-    private void scheduleSessionExpiration(int userId, int sessionId) {
-        executor.schedule(() -> sessions.remove(userId, sessionId), sessionTimeout, TimeUnit.SECONDS);
+    public int getUserId(int sessionId) {
+        return sessions.get(sessionId);
+    }
+
+    private void scheduleSessionExpiration(int sessionId, int userId) {
+        executor.schedule(() -> sessions.remove(sessionId, userId), sessionTimeout, TimeUnit.SECONDS);
     }
     
-    public void lockClient(int userId) {
-        if (lockedClients.contains(userId)) {
+    public void lockClient(SocketAddress socketAddress) {
+        if (lockedClients.contains(socketAddress)) {
             return;
         }
 
-        lockedClients.add(userId);
+        lockedClients.add(socketAddress);
 
-        System.out.println(lockedClients);
-
-        executor.schedule(() -> lockedClients.remove(userId), DEFAULT_LOCK_CLIENT_SECONDS, TimeUnit.SECONDS);
+        executor.schedule(() -> lockedClients.remove(socketAddress), DEFAULT_LOCK_CLIENT_SECONDS, TimeUnit.SECONDS);
     }
 
-    public boolean isLocked(int userId) {
-        return lockedClients.contains(userId);
+    public boolean isLocked(SocketAddress socketAddress) {
+        return lockedClients.contains(socketAddress);
     }
 
     public void shutdown() {
