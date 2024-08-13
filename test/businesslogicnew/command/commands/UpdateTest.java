@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class UpdateTest {
 
     @Test
-    void testUpdateExecutesCorrectly() throws IOException {
+    void testCommandExecutesCorrectly() throws IOException {
         int sessionId = 1;
         int userId = 2;
         boolean isAdmin = false;
@@ -56,9 +56,7 @@ public class UpdateTest {
 
         Update command = new Update(sessionId, userArgs, users, activeUsers);
 
-        String res = command.execute();
-
-        assertEquals("User has been successfully updated", res);
+        assertEquals("User has been successfully updated", command.execute());
 
         ArgumentCaptor<User> updatedUserCaptor = ArgumentCaptor.forClass(User.class);
         verify(users).updateUser(updatedUserCaptor.capture());

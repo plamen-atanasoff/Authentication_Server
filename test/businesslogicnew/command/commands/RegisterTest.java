@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 
 public class RegisterTest {
     @Test
-    void testRegisterExecutesCorrectly() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    void testCommandExecutesCorrectly() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         String username = "pavel123";
         String passwordHash = PasswordEncryptor.generateHash("myPass");
         String firstName = "Pavel";

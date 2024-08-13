@@ -21,7 +21,7 @@ public class Update implements Command {
 
     private static final String EMAIL_STRING = "email";
 
-    private static final String SESSION_IS_NOT_VALID_MESSAGE = "Session is not valid";
+    private static final String INVALID_SESSION_MESSAGE = "Session is not valid";
 
     private static final String USER_UPDATED_MESSAGE = "User has been successfully updated";
 
@@ -44,7 +44,7 @@ public class Update implements Command {
     public String execute() {
         // check if user is active
         if (!activeUsers.sessionExists(sessionId)) {
-            return SESSION_IS_NOT_VALID_MESSAGE;
+            return INVALID_SESSION_MESSAGE;
         }
 
         // get user

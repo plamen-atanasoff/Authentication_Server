@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 
 public class LoginWithSessionIdTest {
     @Test
-    void testExecuteWorksCorrectly() {
+    void testCommandExecutesCorrectly() {
         int sessionId = 2;
         ActiveUsers au = mock();
         when(au.sessionExists(sessionId)).thenReturn(true);

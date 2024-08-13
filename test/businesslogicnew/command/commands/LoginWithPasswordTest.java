@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 public class LoginWithPasswordTest {
     @Test
-    void testExecuteWorksCorrectly() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    void testCommandExecutesCorrectly() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         String username = "pavel123";
         String password = "myPass";
         int sessionId = 2;
