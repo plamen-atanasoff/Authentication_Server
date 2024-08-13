@@ -25,6 +25,8 @@ public class Update implements Command {
 
     private static final String USER_UPDATED_MESSAGE = "User has been successfully updated";
 
+    private static final String NON_EXISTENT_USER_MESSAGE = "User does not exist in database";
+
     private final int sessionId;
 
     private final Map<String, String> userArgs;
@@ -54,6 +56,11 @@ public class Update implements Command {
             user = users.getUser(userId);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+        // check if user exists
+        if (user == null) {
+            return NON_EXISTENT_USER_MESSAGE;
         }
 
         // create updated user instance
