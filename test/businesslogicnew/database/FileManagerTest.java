@@ -7,9 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class FileManagerTest {
     @Test
@@ -172,5 +174,16 @@ public class FileManagerTest {
         int id = fm.readId();
 
         assertEquals(3, id);
+    }
+
+    @Test
+    void testUpdateUserWhenFileIsEmpty() throws IOException {
+        User user = mock();
+
+        Path tempFilePath = Files.createTempFile("tempUserDatabase", ".txt");
+
+        FileManager fm = new FileManager(tempFilePath);
+
+        assertDoesNotThrow(() -> fm.updateUser(user));
     }
 }
