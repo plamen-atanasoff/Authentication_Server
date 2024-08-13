@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class UserTest {
     @Test
     void testOfWorksCorrectly() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String passwordHash = PasswordEncryptor.generateHash("mypass");
+        String passwordHash = PasswordEncryptor.getInstance().generateHash("mypass");
         String credentialsLine = "plamen40,\"" + passwordHash + "\",Plamen,Petrov,email@abv.bg";
         String line = "1,0," + credentialsLine;
         UserCredentials credentials = UserCredentials.of(credentialsLine);
@@ -26,7 +26,7 @@ public class UserTest {
 
     @Test
     void testToStringReturnsCorrectValue() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String passwordHash = PasswordEncryptor.generateHash("mypass");
+        String passwordHash = PasswordEncryptor.getInstance().generateHash("mypass");
         String credentialsLine = "plamen40,\"" + passwordHash + "\",Plamen,Petrov,email@abv.bg";
         String line = "1,0," + credentialsLine;
 

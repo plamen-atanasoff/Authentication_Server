@@ -21,13 +21,15 @@ import static org.mockito.Mockito.when;
 public class ChangePasswordTest {
     @Test
     void testCommandExecutesCorrectly() throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+        PasswordEncryptor passwordEncryptor = PasswordEncryptor.getInstance();
+
         int userId = 2;
         int sessionId = 1;
         String username = "testUsername";
         String oldPassword = "testOldPassword";
-        String oldPasswordHash = PasswordEncryptor.generateHash(oldPassword);
+        String oldPasswordHash = passwordEncryptor.generateHash(oldPassword);
         String newPassword = "testNewPassword";
-        String newPasswordHash = PasswordEncryptor.generateHash(newPassword);
+        String newPasswordHash = passwordEncryptor.generateHash(newPassword);
         String firstName = "testFirstName";
         String lastName = "testLastName";
         String email = "testEmail";

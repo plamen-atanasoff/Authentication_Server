@@ -92,7 +92,7 @@ public class LoginWithPassword implements Command {
         // get password hash
         String passwordHashRequest;
         try {
-            passwordHashRequest = PasswordEncryptor.generateHash(password);
+            passwordHashRequest = PasswordEncryptor.getInstance().generateHash(password);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }

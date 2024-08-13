@@ -19,7 +19,7 @@ public class RegisterTest {
     @Test
     void testCommandExecutesCorrectly() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         String username = "pavel123";
-        String passwordHash = PasswordEncryptor.generateHash("myPass");
+        String passwordHash = PasswordEncryptor.getInstance().generateHash("myPass");
         String firstName = "Pavel";
         String lastName = "Pavlovich";
         String email = "myemail@abv.bg";

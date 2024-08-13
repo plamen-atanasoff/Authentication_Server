@@ -25,7 +25,7 @@ public class LoginWithPasswordTest {
         String password = "myPass";
         int sessionId = 2;
         int userId = 3;
-        String passwordHash = PasswordEncryptor.generateHash(password);
+        String passwordHash = PasswordEncryptor.getInstance().generateHash(password);
         UserCredentials credentials = mock();
         when(credentials.passwordHash()).thenReturn(passwordHash);
         User u = mock();

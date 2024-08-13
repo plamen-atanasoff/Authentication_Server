@@ -52,7 +52,7 @@ public class Register implements Command {
         // hash the password
         String passwordHash;
         try {
-            passwordHash = PasswordEncryptor.generateHash(password);
+            passwordHash = PasswordEncryptor.getInstance().generateHash(password);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }

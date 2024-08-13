@@ -70,10 +70,12 @@ public class ChangePassword implements Command {
             return INVALID_SESSION_MESSAGE + " or " + NON_EXISTENT_USER_MESSAGE;
         }
 
+        PasswordEncryptor passwordEncryptor = PasswordEncryptor.getInstance();
+
         // validate old password
         String oldPasswordHash;
         try {
-            oldPasswordHash = PasswordEncryptor.generateHash(oldPassword);
+            oldPasswordHash = passwordEncryptor.generateHash(oldPassword);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }
@@ -85,7 +87,7 @@ public class ChangePassword implements Command {
         // change old password with new one
         String newPasswordHash;
         try {
-            newPasswordHash = PasswordEncryptor.generateHash(newPassword);
+            newPasswordHash = passwordEncryptor.generateHash(newPassword);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }

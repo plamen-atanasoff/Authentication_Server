@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserCredentialsTest {
     @Test
     void testOfWorksCorrectly() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String passwordHashExpected = PasswordEncryptor.generateHash("pass");
+        String passwordHashExpected = PasswordEncryptor.getInstance().generateHash("pass");
 
         String line = "bobby,\"" + passwordHashExpected + "\",Borislav,Petrov,bobi@abv.bg";
 
@@ -26,7 +26,7 @@ public class UserCredentialsTest {
 
     @Test
     void testGetFieldsCountReturnsCorrectValue() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String passwordHashExpected = PasswordEncryptor.generateHash("pass");
+        String passwordHashExpected = PasswordEncryptor.getInstance().generateHash("pass");
         String line = "bobby,\"" + passwordHashExpected + "\",Borislav,Petrov,bobi@abv.bg";
 
         UserCredentials credentials = UserCredentials.of(line);

@@ -23,9 +23,37 @@ public class PasswordEncryptor {
 
     private static final String SALT_FILE_NAME = "salt.bin";
 
-    private static final byte[] salt;
+    private final byte[] salt;
 
-    static {
+    private static PasswordEncryptor passwordEncryptor;
+
+    public static PasswordEncryptor getInstance() {
+        if (passwordEncryptor == null) {
+            passwordEncryptor = new PasswordEncryptor();
+        }
+
+        return passwordEncryptor;
+    }
+
+    public String generateHash(String password)
+        throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATIONS, KEY_LENGTH);
+        SecretKeyFactory skf = SecretKeyFactory.getInstance(ALGORITHM);
+        byte[] hash = skf.generateSecret(spec).getEncoded();
+
+        return Base64.getEncoder().encodeToString(hash);
+    }
+
+    private byte[] generateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[SALT_LENGTH];
+        random.nextBytes(salt);
+
+        return salt;
+    }
+
+    private PasswordEncryptor() {
         File file = new File(SALT_FILE_NAME);
         if (file.exists()) {
             try (var fis = new FileInputStream(file)) {
@@ -41,23 +69,5 @@ public class PasswordEncryptor {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public static String generateHash(String password)
-        throws NoSuchAlgorithmException, InvalidKeySpecException {
-
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATIONS, KEY_LENGTH);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance(ALGORITHM);
-        byte[] hash = skf.generateSecret(spec).getEncoded();
-
-        return Base64.getEncoder().encodeToString(hash);
-    }
-
-    public static byte[] generateSalt() {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[SALT_LENGTH];
-        random.nextBytes(salt);
-
-        return salt;
     }
 }
