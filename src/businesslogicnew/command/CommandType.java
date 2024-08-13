@@ -9,12 +9,16 @@ public enum CommandType {
     // register --username <username> --password <password> --first-name <firstName> --last-name <lastName> --email <email>
     REGISTER("register"),
 
-    // login -–session-id <sessionId>
+    // login --session-id <sessionId>
     LOGIN_SESSION_ID("login"),
 
     // only session-id is a required parameter
-    // update-user -–session-id <session-id>  -–new-username <newUsername> --new-first-name <newFirstName> --new-last-name <newLastName> --new-email <email>
-    UPDATE("update-user");
+    // update-user --session-id <session-id>  --new-username <newUsername> --new-first-name <newFirstName> --new-last-name <newLastName> --new-email <email>
+    UPDATE("update-user"),
+
+
+    // change-password --session-id <session-id> --username <username> --old-password <oldPassword> --new-password <newPassword>
+    CHANGE_PASSWORD("change-password");
 
     private final String name;
 

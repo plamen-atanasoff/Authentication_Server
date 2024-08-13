@@ -16,7 +16,9 @@ public enum Creator {
 
     LOGIN_SESSION_ID(new LoginWithSessionId.LoginWithSessionIdCreator()),
 
-    UPDATE(new Update.UpdateCreator());
+    UPDATE(new Update.UpdateCreator()),
+
+    CHANGE_PASSWORD(new ChangePassword.ChangePasswordCreator());
 
     private final CommandCreator creator;
 
