@@ -14,7 +14,7 @@ public class ActiveUsers {
 
     private static final String ILLEGAL_SESSION_TIMEOUT_MESSAGE = "SessionTimeout must be a positive number";
 
-    private static final long DEFAULT_SESSION_TIMEOUT_SECONDS = 10;
+    private static final long DEFAULT_SESSION_TIMEOUT_SECONDS = 300; // 5 minutes
 
     private static final long DEFAULT_LOCK_CLIENT_SECONDS = 15;
 
