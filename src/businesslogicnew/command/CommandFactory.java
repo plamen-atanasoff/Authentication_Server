@@ -2,9 +2,11 @@ package businesslogicnew.command;
 
 import businesslogicnew.command.commands.creator.Creator;
 import businesslogicnew.database.UserDatabase;
+import businesslogicnew.logger.ServerLogger;
 import businesslogicnew.tokenizer.Tokenizer;
 import businesslogicnew.users.ActiveUsers;
 
+import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +41,8 @@ public class CommandFactory {
         return instance;
     }
 
-    public Command createCommand(String input, UserDatabase users, ActiveUsers activeUsers, SelectionKey key) {
+    public Command createCommand(String input, UserDatabase users, ActiveUsers activeUsers, SelectionKey key)
+        throws IOException {
         int separatingIndex = input.indexOf(DELIMITER);
 
         if (separatingIndex == -1) {
@@ -71,7 +74,7 @@ public class CommandFactory {
             throw new RuntimeException(String.format(FORMAT_STRING, type));
         }
 
-        return creator.create(tokens, users, activeUsers, key);
+        return creator.create(tokens, users, activeUsers, key, ServerLogger.getInstance());
     }
 
     private CommandFactory() {

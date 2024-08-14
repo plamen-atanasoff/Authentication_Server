@@ -4,6 +4,7 @@ import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
 import businesslogicnew.command.commands.creator.Creator;
 import businesslogicnew.database.UserDatabase;
+import businesslogicnew.logger.ServerLogger;
 import businesslogicnew.users.ActiveUsers;
 
 import java.nio.channels.SelectionKey;
@@ -47,7 +48,8 @@ public class LoginWithSessionId implements Command {
             super(CommandType.LOGIN_SESSION_ID);
         }
         @Override
-        public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers, SelectionKey key) {
+        public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers,
+                              SelectionKey key, ServerLogger serverLogger) {
             if (input.size() != ARGS_COUNT) {
                 throw new RuntimeException(String.format(FORMAT_STRING, ARGS_COUNT));
             }

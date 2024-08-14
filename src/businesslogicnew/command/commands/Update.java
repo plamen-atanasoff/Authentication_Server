@@ -6,6 +6,7 @@ import businesslogicnew.command.commands.creator.Creator;
 import businesslogicnew.database.User;
 import businesslogicnew.database.UserCredentials;
 import businesslogicnew.database.UserDatabase;
+import businesslogicnew.logger.ServerLogger;
 import businesslogicnew.users.ActiveUsers;
 
 import java.io.IOException;
@@ -99,7 +100,8 @@ public class Update implements Command {
         }
 
         @Override
-        public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers, SelectionKey key) {
+        public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers,
+                              SelectionKey key, ServerLogger serverLogger) {
             if (input.isEmpty() || input.size() > ARGS_COUNT_MAX) {
                 throw new RuntimeException();
             }

@@ -6,6 +6,7 @@ import businesslogicnew.command.commands.creator.Creator;
 import businesslogicnew.database.User;
 import businesslogicnew.database.UserCredentials;
 import businesslogicnew.database.UserDatabase;
+import businesslogicnew.logger.ServerLogger;
 import businesslogicnew.passwordencryptor.PasswordEncryptor;
 import businesslogicnew.users.ActiveUsers;
 
@@ -127,7 +128,8 @@ public class ChangePassword implements Command {
         }
 
         @Override
-        public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers, SelectionKey key) {
+        public Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers,
+                              SelectionKey key, ServerLogger serverLogger) {
             if (input.size() != ARGS_COUNT) {
                 throw new RuntimeException(String.format(FORMAT_STRING, ARGS_COUNT));
             }

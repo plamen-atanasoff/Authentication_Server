@@ -39,7 +39,7 @@ public class Controller {
         return controller;
     }
 
-    public String execute(String input, SelectionKey key) {
+    public String execute(String input, SelectionKey key) throws IOException {
         return execute(CommandFactory.getInstance().createCommand(input, users, activeUsers, key));
     }
 
