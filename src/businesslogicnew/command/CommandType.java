@@ -20,6 +20,9 @@ public enum CommandType {
     // change-password --session-id <session-id> --username <username> --old-password <oldPassword> --new-password <newPassword>
     CHANGE_PASSWORD("change-password");
 
+    // logout --session-id <sessionId>
+    LOGOUT("logout");
+
     private final String name;
 
     CommandType(String name) {

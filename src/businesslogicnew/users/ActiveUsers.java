@@ -59,6 +59,10 @@ public class ActiveUsers {
         return sessionId++;
     }
 
+    public Integer removeSession(int sessionId) {
+        return sessions.remove(sessionId);
+    }
+
     public boolean sessionExists(int sessionId) {
         return sessions.containsKey(sessionId);
     }
