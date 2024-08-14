@@ -14,9 +14,10 @@ public record User(int id, boolean isAdmin, UserCredentials credentials) {
         int first = line.indexOf(SEPARATOR);
         int second = line.indexOf(SEPARATOR, first + 1);
         UserCredentials userCredentials = UserCredentials.of(line.substring(second + 1));
+        int userId = Integer.parseInt(line.substring(0, first));
         boolean adminStatus = line.substring(first + 1, second).equals(IS_ADMIN);
 
-        return new User(Integer.parseInt(line.substring(0, first)), adminStatus, userCredentials);
+        return new User(userId, adminStatus, userCredentials);
     }
 
     @Override
