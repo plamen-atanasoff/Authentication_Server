@@ -3,6 +3,7 @@ package businesslogicnew.controller;
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandFactory;
 import businesslogicnew.database.UserDatabase;
+import businesslogicnew.logger.ServerLogger;
 import businesslogicnew.users.ActiveUsers;
 
 import java.io.IOException;
@@ -40,7 +41,9 @@ public class Controller {
     }
 
     public String execute(String input, SelectionKey key) throws IOException {
-        return execute(CommandFactory.getInstance().createCommand(input, users, activeUsers, key));
+        ServerLogger logger = new ServerLogger.ServerLoggerBuilder().build();
+
+        return execute(CommandFactory.getInstance().createCommand(input, users, activeUsers, key, logger));
     }
 
     public String execute(Command command) {

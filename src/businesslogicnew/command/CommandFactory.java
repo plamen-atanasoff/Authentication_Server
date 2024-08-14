@@ -41,7 +41,8 @@ public class CommandFactory {
         return instance;
     }
 
-    public Command createCommand(String input, UserDatabase users, ActiveUsers activeUsers, SelectionKey key)
+    public Command createCommand(String input, UserDatabase users, ActiveUsers activeUsers, SelectionKey key,
+                                 ServerLogger logger)
         throws IOException {
         int separatingIndex = input.indexOf(DELIMITER);
 
@@ -74,7 +75,7 @@ public class CommandFactory {
             throw new RuntimeException(String.format(FORMAT_STRING, type));
         }
 
-        return creator.create(tokens, users, activeUsers, key, ServerLogger.getInstance());
+        return creator.create(tokens, users, activeUsers, key, logger);
     }
 
     private CommandFactory() {

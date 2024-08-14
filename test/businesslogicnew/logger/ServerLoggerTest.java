@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
+import java.util.logging.Logger;
 
 import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
@@ -16,11 +17,11 @@ public class ServerLoggerTest {
         String message = "log test message";
         Formatter formatter = mock();
         FileHandler handler = mock();
-        java.util.logging.Logger logger = mock();
+        Logger logger = mock();
 
-        ServerLogger.setup(formatter, handler, logger);
+        ServerLogger serverLogger = new ServerLogger(logger);
 
-        assertDoesNotThrow(() -> ServerLogger.getInstance().log(message));
+        assertDoesNotThrow(() -> serverLogger.log(message));
 
         verify(logger, atMostOnce()).info(message);
     }

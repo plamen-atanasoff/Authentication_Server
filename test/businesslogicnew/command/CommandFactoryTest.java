@@ -17,7 +17,7 @@ public class CommandFactoryTest {
         ActiveUsers activeUsers = mock();
 
         Command command = CommandFactory.getInstance().createCommand(
-                "login -–username plamen100 --password password", users, activeUsers, null);
+                "login -–username plamen100 --password password", users, activeUsers, null, null);
 
         assertNotNull(command, "CommandCreator does not exist");
 
