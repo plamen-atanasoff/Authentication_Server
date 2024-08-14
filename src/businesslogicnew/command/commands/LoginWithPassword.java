@@ -29,6 +29,9 @@ public class LoginWithPassword implements Command {
 
     private static final String CLIENT_IS_LOCKED_MESSAGE = "Client is locked";
 
+    private static final String MULTIPLE_FAILED_LOGIN_ATTEMPTS_MESSAGE =
+        "%s is locked because of multiple failed login attempts";
+
     private final String username;
 
     private final String password;
@@ -39,8 +42,10 @@ public class LoginWithPassword implements Command {
 
     private final SelectionKey key;
 
+    private final ServerLogger serverLogger;
+
     public LoginWithPassword(String username, String password, UserDatabase users, ActiveUsers activeUsers,
-                             SelectionKey key) {
+                             SelectionKey key, ServerLogger serverLogger) {
         if (username == null || password == null) {
             throw new IllegalArgumentException(ILLEGAL_ARGUMENTS_MESSAGE);
         }
@@ -50,6 +55,7 @@ public class LoginWithPassword implements Command {
         this.users = users;
         this.activeUsers = activeUsers;
         this.key = key;
+        this.serverLogger = serverLogger;
     }
 
     @Override
@@ -112,6 +118,13 @@ public class LoginWithPassword implements Command {
             assert failedLoginsCount <= MAX_FAILED_LOGINS_COUNT;
 
             if (failedLoginsCount == MAX_FAILED_LOGINS_COUNT) {
+                // log locking of client
+                try {
+                    serverLogger.log(String.format(MULTIPLE_FAILED_LOGIN_ATTEMPTS_MESSAGE, socketAddress));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 activeUsers.lockClient(socketAddress);
 
                 key.attach(0);
