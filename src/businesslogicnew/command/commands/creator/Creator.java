@@ -25,7 +25,9 @@ public enum Creator {
 
     UPDATE(new Update.UpdateCreator()),
 
-    CHANGE_PASSWORD(new ChangePassword.ChangePasswordCreator());
+    CHANGE_PASSWORD(new ChangePassword.ChangePasswordCreator()),
+
+    LOGOUT(new Logout.LogoutCreator());
 
     private final CommandCreator creator;
 
