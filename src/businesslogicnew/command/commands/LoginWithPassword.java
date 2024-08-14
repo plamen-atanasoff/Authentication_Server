@@ -1,5 +1,6 @@
 package businesslogicnew.command.commands;
 
+import businesslogicnew.command.commands.creator.Creator;
 import businesslogicnew.passwordencryptor.PasswordEncryptor;
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
@@ -141,7 +142,7 @@ public class LoginWithPassword implements Command {
 
         private static final int ARGS_COUNT = 2; // username, password
 
-        protected LoginWithPasswordCreator() {
+        public LoginWithPasswordCreator() {
             super(CommandType.LOGIN_PASSWORD);
         }
         @Override

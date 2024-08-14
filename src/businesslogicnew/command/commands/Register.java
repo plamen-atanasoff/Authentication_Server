@@ -1,5 +1,6 @@
 package businesslogicnew.command.commands;
 
+import businesslogicnew.command.commands.creator.Creator;
 import businesslogicnew.passwordencryptor.PasswordEncryptor;
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
@@ -84,7 +85,7 @@ public class Register implements Command {
 
         private static final int ARGS_COUNT = 5; // username, password, first-name, last-name, email
 
-        protected RegisterCreator() {
+        public RegisterCreator() {
             super(CommandType.REGISTER);
         }
 

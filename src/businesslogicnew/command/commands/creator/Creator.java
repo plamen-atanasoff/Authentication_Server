@@ -1,8 +1,15 @@
-package businesslogicnew.command.commands;
+package businesslogicnew.command.commands.creator;
 
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
+import businesslogicnew.command.commands.ChangePassword;
+import businesslogicnew.command.commands.LoginWithPassword;
+import businesslogicnew.command.commands.LoginWithSessionId;
+import businesslogicnew.command.commands.Logout;
+import businesslogicnew.command.commands.Register;
+import businesslogicnew.command.commands.Update;
 import businesslogicnew.database.UserDatabase;
+import businesslogicnew.logger.ServerLogger;
 import businesslogicnew.users.ActiveUsers;
 
 import java.nio.channels.SelectionKey;
@@ -40,7 +47,7 @@ public enum Creator {
         }
 
         public abstract Command create(Map<String, String> input, UserDatabase users, ActiveUsers activeUsers,
-                                       SelectionKey key);
+                                       SelectionKey key, ServerLogger serverLogger);
 
         public CommandType getType() {
             return type;

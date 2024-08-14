@@ -2,6 +2,7 @@ package businesslogicnew.command.commands;
 
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
+import businesslogicnew.command.commands.creator.Creator;
 import businesslogicnew.database.UserDatabase;
 import businesslogicnew.users.ActiveUsers;
 
@@ -42,7 +43,7 @@ public class LoginWithSessionId implements Command {
 
         private static final int ARGS_COUNT = 1; // session-id
 
-        protected LoginWithSessionIdCreator() {
+        public LoginWithSessionIdCreator() {
             super(CommandType.LOGIN_SESSION_ID);
         }
         @Override

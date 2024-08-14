@@ -17,8 +17,8 @@ public enum CommandType {
     UPDATE("update-user"),
 
 
-    // change-password --session-id <session-id> --username <username> --old-password <oldPassword> --new-password <newPassword>
-    CHANGE_PASSWORD("change-password");
+    // change-password --session-id <sessionId> --username <username> --old-password <oldPassword> --new-password <newPassword>
+    CHANGE_PASSWORD("change-password"),
 
     // logout --session-id <sessionId>
     LOGOUT("logout");

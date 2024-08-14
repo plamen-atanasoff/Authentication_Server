@@ -2,6 +2,7 @@ package businesslogicnew.command.commands;
 
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
+import businesslogicnew.command.commands.creator.Creator;
 import businesslogicnew.database.User;
 import businesslogicnew.database.UserCredentials;
 import businesslogicnew.database.UserDatabase;
@@ -93,7 +94,7 @@ public class Update implements Command {
         private static final int ARGS_COUNT_MAX = 5;
 
 
-        protected UpdateCreator() {
+        public UpdateCreator() {
             super(CommandType.UPDATE);
         }
 

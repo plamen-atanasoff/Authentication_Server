@@ -1,6 +1,6 @@
 package businesslogicnew.command;
 
-import businesslogicnew.command.commands.Creator;
+import businesslogicnew.command.commands.creator.Creator;
 import businesslogicnew.database.UserDatabase;
 import businesslogicnew.tokenizer.Tokenizer;
 import businesslogicnew.users.ActiveUsers;
