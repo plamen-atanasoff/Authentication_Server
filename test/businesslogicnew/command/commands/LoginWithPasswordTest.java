@@ -39,8 +39,9 @@ public class LoginWithPasswordTest {
         ActiveUsers au = mock();
         when(au.addSession(userId)).thenReturn(sessionId);
         SelectionKey key = mock();
+        ServerLogger serverLogger = mock();
 
-        LoginWithPassword command = new LoginWithPassword(username, password, db, au, key);
+        LoginWithPassword command = new LoginWithPassword(username, password, db, au, key, serverLogger);
 
         String res = command.execute();
 
