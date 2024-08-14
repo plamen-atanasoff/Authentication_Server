@@ -115,9 +115,9 @@ public class LoginWithPassword implements Command {
             }
 
             int failedLoginsCount = (int) attachment;
-            assert failedLoginsCount <= MAX_FAILED_LOGINS_COUNT;
+            assert failedLoginsCount <= MAX_FAILED_LOGINS_COUNT - 1;
 
-            if (failedLoginsCount == MAX_FAILED_LOGINS_COUNT) {
+            if (failedLoginsCount == MAX_FAILED_LOGINS_COUNT - 1) {
                 // log locking of client
                 try {
                     serverLogger.log(String.format(MULTIPLE_FAILED_LOGIN_ATTEMPTS_MESSAGE, socketAddress));
@@ -129,7 +129,7 @@ public class LoginWithPassword implements Command {
 
                 key.attach(0);
             } else {
-                key.attach(++failedLoginsCount);
+                key.attach(failedLoginsCount + 1);
             }
 
             return false;
