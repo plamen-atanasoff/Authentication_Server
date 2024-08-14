@@ -13,7 +13,7 @@ public enum CommandType {
     LOGIN_SESSION_ID("login"),
 
     // only session-id is a required parameter
-    // update-user --session-id <session-id>  --new-username <newUsername> --new-first-name <newFirstName> --new-last-name <newLastName> --new-email <email>
+    // update-user --session-id <sessionId>  --new-username <newUsername> --new-first-name <newFirstName> --new-last-name <newLastName> --new-email <email>
     UPDATE("update-user"),
 
 

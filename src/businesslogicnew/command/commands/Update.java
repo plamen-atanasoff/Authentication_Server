@@ -92,7 +92,7 @@ public class Update implements Command {
 
         private static final String SESSION_ID_STRING = "session-id";
 
-        private static final int ARGS_COUNT_MAX = 5;
+        private static final int ARGS_COUNT_MAX = 5; // session-id, new-username, new-first-name, new-last-name, new-email
 
 
         public UpdateCreator() {

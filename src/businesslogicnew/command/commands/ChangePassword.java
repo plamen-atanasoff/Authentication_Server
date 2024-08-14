@@ -121,7 +121,7 @@ public class ChangePassword implements Command {
 
         private static final String NEW_PASSWORD_STRING = "new-password";
 
-        private static final int ARGS_COUNT = 4;
+        private static final int ARGS_COUNT = 4; // session-id, username, old-password, new-password
 
         public ChangePasswordCreator() {
             super(CommandType.CHANGE_PASSWORD);
