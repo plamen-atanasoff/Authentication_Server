@@ -2,11 +2,13 @@ package businesslogicnew.command.commands.creator;
 
 import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
+import businesslogicnew.command.commands.AddAdmin;
 import businesslogicnew.command.commands.ChangePassword;
 import businesslogicnew.command.commands.LoginWithPassword;
 import businesslogicnew.command.commands.LoginWithSessionId;
 import businesslogicnew.command.commands.Logout;
 import businesslogicnew.command.commands.Register;
+import businesslogicnew.command.commands.RemoveAdmin;
 import businesslogicnew.command.commands.Update;
 import businesslogicnew.database.UserDatabase;
 import businesslogicnew.logger.ServerLogger;
@@ -27,7 +29,11 @@ public enum Creator {
 
     CHANGE_PASSWORD(new ChangePassword.ChangePasswordCreator()),
 
-    LOGOUT(new Logout.LogoutCreator());
+    LOGOUT(new Logout.LogoutCreator()),
+
+    ADD_ADMIN(new AddAdmin.AddAdminCreator()),
+
+    REMOVE_ADMIN(new RemoveAdmin.RemoveAdminCreator());
 
     private final CommandCreator creator;
 

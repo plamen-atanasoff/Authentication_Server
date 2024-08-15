@@ -21,7 +21,13 @@ public enum CommandType {
     CHANGE_PASSWORD("change-password"),
 
     // logout --session-id <sessionId>
-    LOGOUT("logout");
+    LOGOUT("logout"),
+
+    // add-admin-user --session-id <sessionId> --username <username>
+    ADD_ADMIN("add-admin-user"),
+
+    // remove-admin-user --session-id <sessionId> --username <username>
+    REMOVE_ADMIN("remove-admin-user");
 
     private final String name;
 
