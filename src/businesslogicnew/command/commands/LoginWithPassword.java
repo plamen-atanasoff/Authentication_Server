@@ -42,10 +42,10 @@ public class LoginWithPassword implements Command {
 
     private final SelectionKey key;
 
-    private final ServerLogger serverLogger;
+    private final ServerLogger logger;
 
     public LoginWithPassword(String username, String password, UserDatabase users, ActiveUsers activeUsers,
-                             SelectionKey key, ServerLogger serverLogger) {
+                             SelectionKey key, ServerLogger logger) {
         if (username == null || password == null) {
             throw new IllegalArgumentException(ILLEGAL_ARGUMENTS_MESSAGE);
         }
@@ -55,7 +55,7 @@ public class LoginWithPassword implements Command {
         this.users = users;
         this.activeUsers = activeUsers;
         this.key = key;
-        this.serverLogger = serverLogger;
+        this.logger = logger;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class LoginWithPassword implements Command {
             if (failedLoginsCount == MAX_FAILED_LOGINS_COUNT - 1) {
                 // log locking of client
                 try {
-                    serverLogger.log(String.format(MULTIPLE_FAILED_LOGIN_ATTEMPTS_MESSAGE, socketAddress));
+                    logger.log(String.format(MULTIPLE_FAILED_LOGIN_ATTEMPTS_MESSAGE, socketAddress));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
