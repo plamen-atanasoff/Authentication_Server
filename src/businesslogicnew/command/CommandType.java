@@ -27,7 +27,10 @@ public enum CommandType {
     ADD_ADMIN("add-admin-user"),
 
     // remove-admin-user --session-id <sessionId> --username <username>
-    REMOVE_ADMIN("remove-admin-user");
+    REMOVE_ADMIN("remove-admin-user"),
+
+    // delete-user --session-id <sessionId> --username <username>
+    DELETE("delete-user");
 
     private final String name;
 

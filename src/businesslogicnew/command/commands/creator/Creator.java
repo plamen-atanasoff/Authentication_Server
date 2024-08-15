@@ -4,6 +4,7 @@ import businesslogicnew.command.Command;
 import businesslogicnew.command.CommandType;
 import businesslogicnew.command.commands.AddAdmin;
 import businesslogicnew.command.commands.ChangePassword;
+import businesslogicnew.command.commands.Delete;
 import businesslogicnew.command.commands.LoginWithPassword;
 import businesslogicnew.command.commands.LoginWithSessionId;
 import businesslogicnew.command.commands.Logout;
@@ -33,7 +34,9 @@ public enum Creator {
 
     ADD_ADMIN(new AddAdmin.AddAdminCreator()),
 
-    REMOVE_ADMIN(new RemoveAdmin.RemoveAdminCreator());
+    REMOVE_ADMIN(new RemoveAdmin.RemoveAdminCreator()),
+
+    DELETE(new Delete.DeleteCreator());
 
     private final CommandCreator creator;
 

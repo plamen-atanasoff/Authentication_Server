@@ -2,6 +2,7 @@ package businesslogicnew.users;
 
 import java.net.SocketAddress;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -61,6 +62,15 @@ public class ActiveUsers {
 
     public Integer removeSession(int sessionId) {
         return sessions.remove(sessionId);
+    }
+
+    public void removeSessionByUserId(int userId) {
+        Optional<Integer> sessionId = sessions.entrySet().stream()
+            .filter(e -> e.getValue() == userId)
+            .findAny()
+            .map(Map.Entry::getKey);
+
+        sessionId.ifPresent(sessions::remove);
     }
 
     public boolean sessionExists(int sessionId) {
