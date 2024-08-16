@@ -19,7 +19,6 @@ public class FileManager {
 
     private static final String FIRST_ROW = "id,adminStatus,username,\"password\",firstName,lastName,email";
 
-    public FileManager(Path filePath) {
     private final Path filePath;
 
         if (filePath == null) {

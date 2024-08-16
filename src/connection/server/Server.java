@@ -3,8 +3,8 @@ package connection.server;
 import businesslogicnew.controller.Controller;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -15,9 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 public class Server {
-    private static final String CLIENT_DISCONNECTED_MESSAGE = "Client has disconnected forcefully";
-
-    private static final String SERVER_FAILED_STARTING_MESSAGE = "Failed to start server";
+    private static final String CLIENT_DISCONNECTED_MESSAGE = "Client %s has disconnected forcefully";
 
     private static final int BUFFER_SIZE = 1024;
 
@@ -35,51 +33,23 @@ public class Server {
         this.port = port;
     }
 
-    public void start() {
+    public void start() throws IOException {
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
             configure(serverSocketChannel);
 
             while (isWorking) {
-                try {
-                    int readyChannels = selector.select();
-                    if (readyChannels == 0) {
-                        continue;
-                    }
-
-                    Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
-                    while (keyIterator.hasNext()) {
-                        SelectionKey key = keyIterator.next();
-                        if (key.isReadable()) {
-                            SocketChannel clientChannel = (SocketChannel) key.channel();
-
-                            String clientInput = getClientInput(clientChannel);
-
-                            if (clientInput == null) {
-                                continue;
-                            }
-
-                            String result;
-                            try {
-                                result = Controller.getInstance().execute(clientInput, key);
-                            } catch (Exception e) {
-                                result = e.toString();
-                            }
-
-                            System.out.println(result);
-
-                            writeClientOutput(clientChannel, result + System.lineSeparator());
-                        } else if (key.isAcceptable()) {
-                            accept(key);
-                        }
-
-                        keyIterator.remove();
-                    }
-                } catch (SocketException e) {
-                    System.out.println(CLIENT_DISCONNECTED_MESSAGE);
+                int readyChannels = selector.select();
+                if (readyChannels == 0) {
+                    continue;
                 }
+
+                Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
+                processKeys(keyIterator);
             }
         } catch (IOException e) {
-            throw new UncheckedIOException(SERVER_FAILED_STARTING_MESSAGE, e);
+            selector.close();
+
+            throw e;
         }
     }
 
@@ -133,7 +103,54 @@ public class Server {
         accept.register(selector, SelectionKey.OP_READ);
     }
 
-    public static void main(String[] args) {
+    private void processKeys(Iterator<SelectionKey> it) throws IOException {
+        while (it.hasNext()) {
+            SelectionKey key = it.next();
+            if (key.isReadable()) {
+                read(key);
+            } else if (key.isAcceptable()) {
+                accept(key);
+            }
+
+            it.remove();
+        }
+    }
+
+    private void read(SelectionKey key) throws IOException {
+        SocketChannel clientChannel = (SocketChannel) key.channel();
+
+        try {
+            String clientInput = getClientInput(clientChannel);
+
+            if (clientInput == null) {
+                return;
+            }
+
+            String result;
+            try {
+                result = Controller.getInstance().execute(clientInput, key);
+            } catch (RuntimeException e) {
+                result = e.toString();
+            }
+
+            // test
+            System.out.println(result);
+
+            writeClientOutput(clientChannel, result + System.lineSeparator());
+        } catch (SocketException e) {
+            handleSocketException(clientChannel, key);
+        }
+    }
+
+    private void handleSocketException(SocketChannel clientChannel, SelectionKey key) throws IOException {
+        SocketAddress disconnectedClientAddress = clientChannel.getRemoteAddress();
+        System.out.printf((CLIENT_DISCONNECTED_MESSAGE) + "%n", disconnectedClientAddress);
+
+        key.cancel();
+        clientChannel.close();
+    }
+
+    public static void main(String[] args) throws IOException {
         final int port = 7777;
         Server server = new Server(port);
 
