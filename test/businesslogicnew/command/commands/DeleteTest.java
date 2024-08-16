@@ -2,17 +2,13 @@ package businesslogicnew.command.commands;
 
 import businesslogicnew.command.Command;
 import businesslogicnew.database.User;
-import businesslogicnew.database.UserCredentials;
 import businesslogicnew.database.UserDatabase;
-import businesslogicnew.logger.ServerLogger;
 import businesslogicnew.users.ActiveUsers;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
