@@ -21,8 +21,13 @@ public class FileManager {
 
     private final Path filePath;
 
+    public FileManager(Path filePath) throws FileNotFoundException {
         if (filePath == null) {
-            throw new IllegalArgumentException(ILLEGAL_ARGUMENT_MESSAGE);
+            throw new IllegalArgumentException(NULL_FILE_PATH_MESSAGE);
+        }
+
+        if (Files.notExists(filePath)) {
+            throw new FileNotFoundException(FILE_NOT_FOUND_MESSAGE);
         }
 
         this.filePath = filePath;
