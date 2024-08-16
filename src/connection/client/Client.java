@@ -18,7 +18,9 @@ public class Client {
     private static final String SERVER_REPLY_MESSAGE_FORMAT = "The server replied <%s>";
 
     private static final String SERVER_COMMUNICATION_ERROR_MESSAGE = "There is a problem with the network communication";
+
     private static final String SERVER_HOST = "localhost";
+
     private final int serverPort;
 
     public Client(int serverPort) {
