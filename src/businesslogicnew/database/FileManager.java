@@ -1,5 +1,6 @@
 package businesslogicnew.database;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -10,15 +11,17 @@ import java.util.List;
 
 public class FileManager {
 
-    private static final String ILLEGAL_ARGUMENT_MESSAGE = "File name is null";
+    private static final String NULL_FILE_PATH_MESSAGE = "File path cannot be null";
 
-    private final Path filePath;
+    private static final String FILE_NOT_FOUND_MESSAGE = "File does not exist";
 
     private static final String SEPARATOR = ",";
 
     private static final String FIRST_ROW = "id,adminStatus,username,\"password\",firstName,lastName,email";
 
     public FileManager(Path filePath) {
+    private final Path filePath;
+
         if (filePath == null) {
             throw new IllegalArgumentException(ILLEGAL_ARGUMENT_MESSAGE);
         }
