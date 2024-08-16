@@ -133,9 +133,6 @@ public class Server {
                 result = e.toString();
             }
 
-            // test
-            System.out.println(result);
-
             writeClientOutput(clientChannel, result + System.lineSeparator());
         } catch (SocketException e) {
             handleSocketException(clientChannel, key);
